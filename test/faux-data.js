@@ -205,8 +205,67 @@ const bookings = [
   },
 ]
 
+const allBooked = [
+  {
+    "id": "5fwrgu4i7k55hl6sz",
+    "userID": 9,
+    "date": "2020/04/22",
+    "roomNumber": 1,
+    "roomServiceCharges": []
+  }, {
+    "id": "5fwrgu4i7k55hl6sz",
+    "userID": 9,
+    "date": "2020/04/22",
+    "roomNumber": 2,
+    "roomServiceCharges": []
+  }, {
+    "id": "5fwrgu4i7k55hl6sz",
+    "userID": 9,
+    "date": "2020/04/22",
+    "roomNumber": 3,
+    "roomServiceCharges": []
+  }, {
+    "id": "5fwrgu4i7k55hl6sz",
+    "userID": 9,
+    "date": "2020/04/22",
+    "roomNumber": 4,
+    "roomServiceCharges": []
+  }, {
+    "id": "5fwrgu4i7k55hl6sz",
+    "userID": 9,
+    "date": "2020/04/22",
+    "roomNumber": 5,
+    "roomServiceCharges": []
+  }, {
+    "id": "5fwrgu4i7k55hl6sz",
+    "userID": 9,
+    "date": "2020/04/22",
+    "roomNumber": 6,
+    "roomServiceCharges": []
+  },  {
+    "id": "5fwrgu4i7k55hl6sz",
+    "userID": 9,
+    "date": "2020/04/22",
+    "roomNumber": 7,
+    "roomServiceCharges": []
+  }, {
+    "id": "5fwrgu4i7k55hl6sz",
+    "userID": 9,
+    "date": "2020/04/22",
+    "roomNumber": 8,
+    "roomServiceCharges": []
+  }
+]
+
+const junk = {
+  words: "this is trash and fodder",
+  array: [{id: 1}, {id: 2}, {id: 3}]
+}
+
 export {
   users,
   rooms,
-  bookings
+  bookings,
+  allBooked,
+  junk
 }
