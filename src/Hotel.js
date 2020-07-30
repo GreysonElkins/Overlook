@@ -62,6 +62,9 @@ class Hotel {
   findAvailableRooms(date) {
     if (this.isDate(date) === false) return 'The date is an unexpected format'
     let bookedRooms = this.findBookedRoomNumbers(date)
+    if (!Array.isArray(bookedRooms)) return bookedRooms
+    if (!this.hasData('rooms')) return 'This hotel is missing room data'
+
     let availableRooms = this.rooms.filter(room => {
       if (!bookedRooms.includes(room.number)) return room
     })
@@ -75,6 +78,7 @@ class Hotel {
   } 
 
   findBookedRoomNumbers(date) {
+    if(!this.hasData('bookings')) return 'This hotel is missing booking data'
     return this.bookings.reduce((roomNumbers, booking) => {
       if (booking.date === date) roomNumbers.push(booking.roomNumber)
       return roomNumbers
@@ -84,6 +88,7 @@ class Hotel {
   findAvailableRoomsByType(roomType, date) {
     if (!this.isDate(date)) return 'The date is an unexpected format'
     let availableRooms = this.findAvailableRooms(date)
+    if (!Array.isArray(availableRooms)) return availableRooms
     let availableRoomType = availableRooms.filter(room => {
       if (room.roomType === roomType) return room
     })
@@ -125,6 +130,7 @@ class Hotel {
   }
 
   findUser(info) {
+    if (!this.hasData('users')) return 'This hotel is missing user data'
     const result = this.users.find(user => {
       if (Object.values(user).includes(info)) {
         return user
@@ -138,6 +144,5 @@ class Hotel {
     }
   }
 }
-
 
 export default Hotel

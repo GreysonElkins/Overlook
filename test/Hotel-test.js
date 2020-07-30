@@ -164,22 +164,38 @@ describe('Hotel', () => {
       expect(result).to.equal(true)
     })
 
-    it('shouldn\'t let functions run without relevant data', () => {
-      const results = [
-        driscoll.findAvailableRooms('2020/07/30'),
-        driscoll.findBookedRoomNumbers('2020/07/30'),
-        driscoll.findAvailableRoomsByType('suite', '2020/07/30'),
-        driscoll.calculateDailyRevenue('2020/07/30'),
-        driscoll.findUser(8)
-      ]
-      const expectedResults = [
-        'This hotel is missing booking data', 
-        'This hotel is missing booking data',
-        'This hotel is missing room data', 
-        'This hotel is missing booking data',
-        'This hotel is missing user data'
-      ]
-      expect(results).to.deep.equal(expectedResults)
+    it('shouldn\'t find booked room numbers without relevant data', () => {
+      const results = driscoll.findBookedRoomNumbers('2020/07/30')
+        // driscoll.findAvailableRoomsByType('suite', '2020/07/30'),
+        // driscoll.calculateDailyRevenue('2020/07/30'),
+        // driscoll.findUser(8)
+      expect(results).to.equal('This hotel is missing booking data')
+    })
+    
+    it('shouldn\'t find available rooms without relevant data', () => {
+      const results = driscoll.findAvailableRooms('2020/07/30')
+      expect(results).to.equal('This hotel is missing booking data')
+      driscoll.storeData(bookings)
+      const results2 = driscoll.findAvailableRooms('2020/07/30')
+      expect(results2).to.equal('This hotel is missing room data')
+    })
+
+    it('shouldn\'t filter available rooms without relevant data', () => {
+      const results = driscoll.findAvailableRoomsByType('suite', '2020/07/30')
+      expect(results).to.equal('This hotel is missing booking data')
+      driscoll.storeData(bookings)
+      const results2 = driscoll.findAvailableRoomsByType('suite', '2020/07/30')
+      expect(results2).to.equal('This hotel is missing room data')
+    })
+
+    it('shouldn\'t calculate daily revenue without relevant data', () => {
+      const results = driscoll.calculateDailyRevenue('2020/07/30')
+      expect(results).to.equal('This hotel is missing booking data')
+    })
+
+    it('shouldn\'t search for users without relevant data,', () => {
+      const results = driscoll.findUser(8)
+      expect(results).to.equal('This hotel is missing user data')
     })
   })
 })
