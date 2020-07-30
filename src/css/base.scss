@@ -1,7 +1,38 @@
+@import 'partials';
+
 body {
   background-image: url('../images/background.png');
+  padding: 0em;
+}
+
+h1 {
+}
+
+header {
+  color: $ghost-white;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 1em;
+}
+
+nav > button {
+  background: none;
+  border: none;
+  color: $ghost-white;
+  font-size: 2em;
+  margin-right: 2em;
+}
+
+.sign-in-or-out {
+  font-size: 1.2em;
 }
 
 .icon {
-  width: 1.5em;
+  margin-top: 1em;
+  width: 1em;
+}
+
+.hidden {
+  display: none;
 }
