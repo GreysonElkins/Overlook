@@ -2,6 +2,7 @@ class Hotel {
   constructor() {
     this.rooms;
     this.bookings;
+    this.users;
   }
 
   storeData(input) {
@@ -9,6 +10,14 @@ class Hotel {
     const dataCategory = this.determineDataCategory(input)
     if (dataCategory !== 'unexpected data type') {
       this[dataCategory] = input;
+    }
+  }
+
+  hasData(input) {
+    if (this[input] === undefined) {
+      return false
+    } else {
+      return true
     }
   }
 
@@ -28,6 +37,7 @@ class Hotel {
       'roomNumber', 
       'roomServiceCharges'
     ]
+    const userDataRequirements = ['id', 'name'];
     let dataPoints;
     
     if (!Array.isArray(input)) return 'unexpected data type'
@@ -42,13 +52,15 @@ class Hotel {
       return 'rooms'
     } else if (bookingDataRequirements.every(key => dataPoints.includes(key))) {
       return 'bookings'
+    } else if (userDataRequirements.every(key => dataPoints.includes(key))) {
+      return 'users' 
     } else {
       return 'unexpected data type'
     }
   }
 
   findAvailableRooms(date) {
-    if (!this.isDate(date)) return 'The date is an unexpected format'
+    if (this.isDate(date) === false) return 'The date is an unexpected format'
     let bookedRooms = this.findBookedRoomNumbers(date)
     let availableRooms = this.rooms.filter(room => {
       if (!bookedRooms.includes(room.number)) return room
@@ -76,7 +88,9 @@ class Hotel {
       if (room.roomType === roomType) return room
     })
 
-    if (availableRoomType.length > 0) {
+    if (availableRooms === 'This hotel is missing room data') {
+      return 'This hotel is missing room data'
+    } else if (availableRoomType.length > 0) {
       return availableRoomType
     } else {
       return `We're so sorry but none of the ${roomType}s ` +
@@ -86,6 +100,7 @@ class Hotel {
 
   calculateDailyRevenue(date) {
     let bookedRooms = this.findBookedRoomNumbers(date);
+    if (!Array.isArray(bookedRooms)) return bookedRooms
     return this.rooms.reduce((revenue, room) => {
       if (bookedRooms.includes(room.number)) {
         revenue += room.costPerNight
@@ -106,6 +121,20 @@ class Hotel {
       return true;
     } else {
       return false;
+    }
+  }
+
+  findUser(info) {
+    const result = this.users.find(user => {
+      if (Object.values(user).includes(info)) {
+        return user
+      }
+    })
+
+    if (result === undefined) {
+      return 'No user was found, please adjust your search'
+    } else {
+      return result
     }
   }
 }
