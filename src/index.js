@@ -5,7 +5,7 @@ import './images/user-icon.png'
 import './images/overlook.jpg'
 
 import Hotel from './Hotel'
-import Page from './Page'
+import Page from './EventHandler'
 
 const overlook = new Hotel()
 const page = new Page()
