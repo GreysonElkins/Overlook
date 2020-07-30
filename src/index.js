@@ -8,17 +8,16 @@ import Hotel from './Hotel'
 
 const overlook = new Hotel()
 
-const getData = (src, saveLocation) => {
+const getData = (src) => {
   fetch(`https://fe-apps.herokuapp.com/api/v1/overlook/1904/${src}/${src}`)
     .then(response => response.json())
-    .then(data => saveLocation.storeData(data[src]))
+    .then(data => overlook.storeData(data[src]))
     .catch(err => console.log(err))
 }
 
-function getAllData(saveLocation) {
+function getAllData() {
   let args = Array.from(arguments);
-  args.shift();
-  args.forEach(argument => getData(argument, saveLocation))
+  args.forEach(argument => getData(argument))
 }
 
-getAllData(overlook, 'users', 'rooms', 'bookings')
+getAllData('users', 'rooms', 'bookings')
