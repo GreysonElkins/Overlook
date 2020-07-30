@@ -1,6 +1,6 @@
 import 'chai'
 import Hotel from '../src/Hotel'
-import {rooms, bookings, allBooked, junk} from './faux-data'
+import {users, rooms, bookings, allBooked, junk} from './faux-data'
 import { expect } from 'chai'
 
 describe('Hotel', () => {
@@ -40,6 +40,11 @@ describe('Hotel', () => {
     it('should be able to store bookings data', () => {
       overlook.storeData(bookings)
       expect(overlook.bookings).to.deep.equal(bookings)
+    })
+
+    it('should be able to store user data', () => {
+      overlook.storeData(users)
+      expect(overlook.users).to.deep.equal(users)
     })
   
     it('should not be able to store other data', () => {
@@ -116,6 +121,78 @@ describe('Hotel', () => {
       let result = overlook.calculateDailyRevenue('2020/01/10')
       expect(result).to.equal(491.14 + 261.26)
     })
-
   })  
+
+  describe('user handling', () => {
+    beforeEach(() => {
+      overlook.storeData(users)
+    })
+
+    it('should be able to find a specific user by name', () => {
+      let result = overlook.findUser('Greyson Elkins')
+      expect(result).to.deep.equal(users[0])
+    })
+
+    it('should be able to find a specific user by id', () => {
+      let result = overlook.findUser(9)
+      expect(result).to.deep.equal(users[8])
+    })
+
+    it('should return a message when no user was found', () => {
+      let result = overlook.findUser('Waldo')
+      expect(result).to.deep.equal('No user was found, ' + 
+      'please adjust your search')
+    })
+  })
+
+  describe('empty data handling', () => {
+
+    let driscoll;
+
+    beforeEach(() => {
+      driscoll = new Hotel()
+    })
+
+    it('if no data has been stored yet, it should be able say so', () => {
+      const result = driscoll.hasData('users')
+      expect(result).to.equal(false)
+    })
+    
+    it('if data has been stored, it should be able to say so', () => {
+      driscoll.storeData(users)
+      const result = driscoll.hasData('users')
+      expect(result).to.equal(true)
+    })
+
+    it('shouldn\'t find booked room numbers without relevant data', () => {
+      const results = driscoll.findBookedRoomNumbers('2020/07/30')
+      expect(results).to.equal('This hotel is missing booking data')
+    })
+    
+    it('shouldn\'t find available rooms without relevant data', () => {
+      const results = driscoll.findAvailableRooms('2020/07/30')
+      expect(results).to.equal('This hotel is missing booking data')
+      driscoll.storeData(bookings)
+      const results2 = driscoll.findAvailableRooms('2020/07/30')
+      expect(results2).to.equal('This hotel is missing room data')
+    })
+
+    it('shouldn\'t filter available rooms without relevant data', () => {
+      const results = driscoll.findAvailableRoomsByType('suite', '2020/07/30')
+      expect(results).to.equal('This hotel is missing booking data')
+      driscoll.storeData(bookings)
+      const results2 = driscoll.findAvailableRoomsByType('suite', '2020/07/30')
+      expect(results2).to.equal('This hotel is missing room data')
+    })
+
+    it('shouldn\'t calculate daily revenue without relevant data', () => {
+      const results = driscoll.calculateDailyRevenue('2020/07/30')
+      expect(results).to.equal('This hotel is missing booking data')
+    })
+
+    it('shouldn\'t search for users without relevant data,', () => {
+      const results = driscoll.findUser(8)
+      expect(results).to.equal('This hotel is missing user data')
+    })
+  })
 })
