@@ -5,8 +5,12 @@ import './images/user-icon.png'
 import './images/overlook.jpg'
 
 import Hotel from './Hotel'
+import Page from './Page'
 
 const overlook = new Hotel()
+const page = new Page()
+
+const buttons = document.querySelectorAll('button')
 
 const getData = (src) => {
   fetch(`https://fe-apps.herokuapp.com/api/v1/overlook/1904/${src}/${src}`)
@@ -14,6 +18,8 @@ const getData = (src) => {
     .then(data => overlook.storeData(data[src]))
     .catch(err => console.log(err))
 }
+
+
 
 function getAllData() {
   let args = Array.from(arguments);

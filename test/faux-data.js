@@ -262,10 +262,19 @@ const junk = {
   array: [{id: 1}, {id: 2}, {id: 3}]
 }
 
+const events = {
+  logIn: {
+    target: {
+      id: 'log-in'
+    }
+  }
+}
+
 export {
   users,
   rooms,
   bookings,
   allBooked,
+  events,
   junk
 }
