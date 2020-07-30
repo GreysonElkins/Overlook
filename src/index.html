@@ -9,17 +9,30 @@
   <header>
     <h1 tabindex="0">The Overlook Hotel</h1>
     <nav>
-      <button id="about-button">About</button>
-      <span class="sign-in-or-out">
-        <img class="icon" src="/images/user-icon.png" alt="user icon"/>
-        <span id="user-bar-signed-out" tabindex="0">sign in</span>
+      <span class="sign-in-or-out hidden">
+        <button id="about-button" tabindex="0">About</button>
+        <img class="icon" src="/images/user-icon.png" alt="user icon" tabindex="0"/>
+        <span id="user-bar-signed-out hidden" tabindex="0">sign in</span>
         <span id="user-bar-signed-in">
-          <span class="hidden" id="user-name" tabindex="0">Jack Torrence</span> |
+          <span class="" id="user-name" tabindex="0" tabindex="0">Jack Torrence</span> |
           <span id="sign-out" tabindex="0"> sign-out</span>
         </span>
       </span>
     </nav>
   </header>
-  <section class="page" id="home-page">
-  </body>
+  <section class="home-page" id="home-page">
+    <nav>
+      <button id="about-button" tabindex="0">About</button>
+      <button id="rooms-button" tabindex="0">Rooms</button>
+    </nav>
+    <img src="images/overlook.jpg" class="overlook-image"
+    alt="The Overlook, a hotel just below the peak of a snowcapped
+     mountain during summer, soft clouds billow over the peak under a blue sky"/>
+    <section class="main-log-in" id="main-log-in">
+      <span>username: <input id="username" tabindex="0"/></span>
+      <span>password: <input id="password" type="password" tabindex="0"/></span>
+      <button>Login</button>
+    </section>
+  </section>
+</body>
 </html>
