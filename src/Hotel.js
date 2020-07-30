@@ -78,7 +78,7 @@ class Hotel {
   } 
 
   findBookedRoomNumbers(date) {
-    if(!this.hasData('bookings')) return 'This hotel is missing booking data'
+    if (!this.hasData('bookings')) return 'This hotel is missing booking data'
     return this.bookings.reduce((roomNumbers, booking) => {
       if (booking.date === date) roomNumbers.push(booking.roomNumber)
       return roomNumbers

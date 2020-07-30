@@ -166,9 +166,6 @@ describe('Hotel', () => {
 
     it('shouldn\'t find booked room numbers without relevant data', () => {
       const results = driscoll.findBookedRoomNumbers('2020/07/30')
-        // driscoll.findAvailableRoomsByType('suite', '2020/07/30'),
-        // driscoll.calculateDailyRevenue('2020/07/30'),
-        // driscoll.findUser(8)
       expect(results).to.equal('This hotel is missing booking data')
     })
     
