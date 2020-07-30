@@ -1,13 +1,38 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
-    <title>Webpack Starter Kit</title>
+    <title>The Overlook Hotel</title>
   </head>
-  <body>
-    <h1>Webpack Starter Kit</h1>
-
-    <img src="./images/turing-logo.png" alt="turing logo" height="100px" width="100px">
-
-    <!-- Do not include the index.js or main.bundle.js file here - it is done automatically by the webpack server -->
-  </body>
+  
+</section>
+<body>
+  <header>
+    <h1 tabindex="0">The Overlook Hotel</h1>
+    <nav>
+      <span class="sign-in-or-out hidden">
+        <button id="about-button" tabindex="0">About</button>
+        <img class="icon" src="/images/user-icon.png" alt="user icon" tabindex="0"/>
+        <span id="user-bar-signed-out hidden" tabindex="0">sign in</span>
+        <span id="user-bar-signed-in">
+          <span class="" id="user-name" tabindex="0" tabindex="0">Jack Torrence</span> |
+          <span id="sign-out" tabindex="0"> sign-out</span>
+        </span>
+      </span>
+    </nav>
+  </header>
+  <section class="home-page" id="home-page">
+    <nav>
+      <button id="about-button" tabindex="0">About</button>
+      <button id="rooms-button" tabindex="0">Rooms</button>
+    </nav>
+    <img src="images/overlook.jpg" class="overlook-image"
+    alt="The Overlook, a hotel just below the peak of a snowcapped
+     mountain during summer, soft clouds billow over the peak under a blue sky"/>
+    <section class="main-log-in" id="main-log-in">
+      <span>username: <input id="username" tabindex="0"/></span>
+      <span>password: <input id="password" type="password" tabindex="0"/></span>
+      <button tabindex="0">Login</button>
+    </section>
+  </section>
+</body>
 </html>
