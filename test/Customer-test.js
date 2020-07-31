@@ -49,4 +49,9 @@ describe('Customer', () => {
     let nick = new Customer(users[2], bookings, rooms)
     expect(nick.accountBalance).to.equal(429.44 + 477.38 + 261.26)
   })
+
+  it('should have a balance of 0 if rooms aren\'t provided', () => {
+    let nick = new Customer(users[2], bookings)
+    expect(nick.accountBalance).to.equal(0)
+  })
 })

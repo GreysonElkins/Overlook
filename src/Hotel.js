@@ -1,4 +1,6 @@
 import DataHandler from './DataHandler'
+import Customer from './Customer'
+import Manager from './Manager';
 
 class Hotel extends DataHandler {
   constructor() {
@@ -151,6 +153,7 @@ class Hotel extends DataHandler {
     let password = "overlook2020"
     if (credentials.username === "manager" 
     && credentials.password === password) {
+      this.currentUser = new Manager()
       return true
     } else if (credentials.username.includes('customer') 
     && credentials.password === password) {
@@ -166,7 +169,7 @@ class Hotel extends DataHandler {
     if (typeof currentUser !== 'object') {
       return false
     } else {
-      // return currentUser
+      this.currentUser = new Customer(currentUser, this.bookings, this.rooms)
       return true
     }
   }

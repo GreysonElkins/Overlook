@@ -1,6 +1,8 @@
 import 'chai'
 import { expect } from 'chai'
 import Hotel from '../src/Hotel'
+import Customer from '../src/Customer'
+import Manager from '../src/Manager'
 import {users, rooms, bookings, allBooked, junk} from './faux-data'
 
 describe('Hotel', () => {
@@ -232,7 +234,6 @@ describe('Hotel', () => {
       expect(result).to.equal(true)
     })
 
-
     it('should only allow users already in the system to log in', () => {
       const clientCredentials = {
         username: 'customer11',
@@ -240,6 +241,36 @@ describe('Hotel', () => {
       }
       let result = overlook.authenticateUser(clientCredentials)
       expect(result).to.equal(false)
+    })
+
+    it('should store the current user as a customer upon authenticating ' + 
+    'a customer', () => {
+      const clientCredentials = {
+        username: 'customer1',
+        password: 'overlook2020'
+      }
+      overlook.authenticateUser(clientCredentials)
+      expect(overlook.currentUser).to.be.an.instanceOf(Customer)
+    })
+
+    it('should create the customer based on data from the hotel', () => {
+      const clientCredentials = {
+        username: 'customer1',
+        password: 'overlook2020'
+      }
+      overlook.storeData(rooms)
+      overlook.storeData(bookings)
+      overlook.authenticateUser(clientCredentials)
+      expect(overlook.currentUser.accountBalance).to.equal(491.14)
+    })
+
+    it('should create a manager as the currentUser when a manager logs in', () => {
+      const managerCredentials = {
+        username: 'manager',
+        password: 'overlook2020'
+      }
+      overlook.authenticateUser(managerCredentials)
+      expect(overlook.currentUser).to.be.an.instanceOf(Manager)
     })
   })
 })
