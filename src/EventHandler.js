@@ -16,11 +16,16 @@ class EventHandler {
     return buttons
   }
 
-  buttonHandler(event, page = new Page()) {
+  buttonHandler(event, page = new Page(), hotel = this.hotel) {
     if (event.target.id === 'log-in') {
       event.preventDefault()
       const userCredentials = page.getLogInInfoFromForm()
-      
+      let isAuthorized = hotel.authenticateUser(userCredentials)
+      if (isAuthorized === true) {
+        // this.loggedIn = true
+      }
+      // isAuthorized ? load next page: message on DOM, clear inputs
+      // test line 23
     }
   }
 }

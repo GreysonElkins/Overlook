@@ -264,7 +264,8 @@ describe('Hotel', () => {
       expect(overlook.currentUser.accountBalance).to.equal(491.14)
     })
 
-    it('should create a manager as the currentUser when a manager logs in', () => {
+    it('should create a manager as the currentUser' + 
+    'when a manager logs in', () => {
       const managerCredentials = {
         username: 'manager',
         password: 'overlook2020'
