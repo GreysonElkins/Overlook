@@ -1,10 +1,10 @@
 import Page from './Page'
+import Hotel from './Hotel'
 // I wanted this to be an object, but couldn't get it 
 // to run findButtons on instantiation
 class EventHandler {
-
-  constructor() {
-    // this.hotel = hotel
+  constructor(hotel) {
+    this.hotel = new Hotel ();
     this.buttons = this.findButtons()
   }
 
