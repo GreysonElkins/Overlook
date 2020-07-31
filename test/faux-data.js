@@ -262,10 +262,43 @@ const junk = {
   array: [{id: 1}, {id: 2}, {id: 3}]
 }
 
+const inputNodes = [
+  {
+    id: "username",
+    value: "yoPapa",
+    classList: {
+      contains: (query) => {
+        let list = "";
+        return list.includes(query) ? true : false;
+      },
+    },
+  }, {
+    id: "password",
+    value: "yoMama",
+    classList: {
+      contains: (query) => {
+        let list = "";
+        return list.includes(query) ? true : false;
+      },
+    },
+  }, {
+    id: "password",
+    value: "your self, as a child",
+    classList: {
+      contains: (query) => {
+        let list = "hidden";
+        return list.includes(query) ? true : false;
+      },
+    },
+  },
+];
+
+
 export {
   users,
   rooms,
   bookings,
   allBooked,
-  junk
+  junk,
+  inputNodes
 }

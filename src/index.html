@@ -28,11 +28,17 @@
     <img src="images/overlook.jpg" class="overlook-image"
     alt="The Overlook, a hotel just below the peak of a snowcapped
      mountain during summer, soft clouds billow over the peak under a blue sky"/>
-    <section class="main-log-in" id="main-log-in">
-      <span>username: <input id="username" tabindex="0"/></span>
-      <span>password: <input id="password" type="password" tabindex="0"/></span>
-      <button tabindex="0">Login</button>
-    </section>
+    <form class="main-log-in" id="main-log-in">
+      <span>
+        <label for="username">username: </label>
+        <input id="username" tabindex="0"/>
+      </span>
+      <span>
+        <label for="password">password: </label>
+        <input id="password" type="password" tabindex="0"/>
+      </span>
+      <button tabindex="0" id="log-in">Login</button>
+    </form>
   </section>
 </body>
 </html>
