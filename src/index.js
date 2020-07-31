@@ -5,10 +5,10 @@ import './images/user-icon.png'
 import './images/overlook.jpg'
 
 import Hotel from './Hotel'
-import Page from './EventHandler'
+import EventHandler from './EventHandler'
 
 const overlook = new Hotel()
-const page = new Page()
+const eventHandler = new EventHandler()
 
 const buttons = document.querySelectorAll('button')
 
