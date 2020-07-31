@@ -19,8 +19,6 @@ const getData = (src) => {
     .catch(err => console.log(err))
 }
 
-
-
 function getAllData() {
   let args = Array.from(arguments);
   args.forEach(argument => getData(argument))

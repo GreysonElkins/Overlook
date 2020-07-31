@@ -2,7 +2,9 @@ import Page from './Page'
 // I wanted this to be an object, but couldn't get it 
 // to run findButtons on instantiation
 class EventHandler {
+
   constructor() {
+    // this.hotel = hotel
     this.buttons = this.findButtons()
   }
 
@@ -18,10 +20,8 @@ class EventHandler {
     if (event.target.id === 'log-in') {
       event.preventDefault()
       page.getLogInInfoFromForm()
-      page.goToRoomsPage()
     }
   }
-
 }
 
 export default EventHandler

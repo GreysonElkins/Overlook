@@ -46,11 +46,6 @@ describe("Event Handler", () => {
     // trying to set () => {} as a property of undefined?
   })
 
-  it("should be able to handle an event for a log-in button", () => {
-    handler.buttonHandler(event, mockHelper)
-    expect(mockHelper.goToRoomsPage).to.have.been.called(1)
-  })
-
   it('should receive log-in info from form', () => {
     handler.buttonHandler(event, mockHelper)
     expect(mockHelper.getLogInInfoFromForm).to.have.been.called(1)
