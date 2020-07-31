@@ -1,5 +1,8 @@
-class Hotel {
+import DataHandler from './DataHandler'
+
+class Hotel extends DataHandler {
   constructor() {
+    super();
     this.rooms;
     this.bookings;
     this.users;
@@ -141,6 +144,30 @@ class Hotel {
       return 'No user was found, please adjust your search'
     } else {
       return result
+    }
+  }
+  
+  authenticateUser(credentials) {
+    let password = "overlook2020"
+    if (credentials.username === "manager" 
+    && credentials.password === password) {
+      return true
+    } else if (credentials.username.includes('customer') 
+    && credentials.password === password) {
+      return this.checkUserId(credentials.username)
+    } else {
+      return false
+    }
+  }
+
+  checkUserId(username) {
+    const id = parseInt(username.substring(8))
+    const currentUser = this.findUser(id)
+    if (typeof currentUser !== 'object') {
+      return false
+    } else {
+      // return currentUser
+      return true
     }
   }
 }

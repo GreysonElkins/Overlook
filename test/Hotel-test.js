@@ -1,7 +1,7 @@
 import 'chai'
+import { expect } from 'chai'
 import Hotel from '../src/Hotel'
 import {users, rooms, bookings, allBooked, junk} from './faux-data'
-import { expect } from 'chai'
 
 describe('Hotel', () => {
   
@@ -193,6 +193,53 @@ describe('Hotel', () => {
     it('shouldn\'t search for users without relevant data,', () => {
       const results = driscoll.findUser(8)
       expect(results).to.equal('This hotel is missing user data')
+    })
+  })
+
+  describe('user authentification', () => {
+
+    beforeEach(() => {
+      overlook.storeData(users);
+    })
+    
+    it('should allow a manager to log in with the right password', () => {
+      const managerCredentials = {username: 'manager', password: 'overlook2020'}
+      let result = overlook.authenticateUser(managerCredentials) 
+      expect(result).to.equal(true)
+    })
+
+    it('should not allow a manager to log in with the wrong password', () => {
+      const managerCredentials = {
+        username: 'manager', 
+        password: 'overlook2021'
+      } 
+      let result = overlook.authenticateUser(managerCredentials)
+      expect(result).to.equal(false)
+    })
+
+    it('should be able to find customer\'s id', () => {
+      let user = overlook.checkUserId('customer1')
+      expect(user).to.deep.equal(true)
+    })
+
+    it('should allow a client to log in with the correct password' +
+    'pull up their "account"', () => {
+      const clientCredentials = {
+        username: 'customer1',
+        password: 'overlook2020'
+      }
+      let result = overlook.authenticateUser(clientCredentials)
+      expect(result).to.equal(true)
+    })
+
+
+    it('should only allow users already in the system to log in', () => {
+      const clientCredentials = {
+        username: 'customer11',
+        password: 'overlook2020'
+      }
+      let result = overlook.authenticateUser(clientCredentials)
+      expect(result).to.equal(false)
     })
   })
 })
