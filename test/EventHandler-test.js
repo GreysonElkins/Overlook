@@ -5,7 +5,8 @@ chai.use(spies)
 
 import EventHandler from "../src/EventHandler"
 import Hotel from '../src/Hotel'
-import {inputNodes} from './faux-data'
+import Customer from '../src/Customer'
+import {inputNodes, users} from './faux-data'
 
 describe("Event Handler", () => {
   let handler;
@@ -22,7 +23,7 @@ describe("Event Handler", () => {
       return {username: 'yoPapa', password: 'yoMama'}
     })
     chai.spy.on(fauxPage.hotel, ['authenticateUser'], () => {
-      return true
+      return new Customer(users[0])
     })
     chai.spy.on(document, ["querySelectorAll"], () => {
       return ['node', 'node', 'node']

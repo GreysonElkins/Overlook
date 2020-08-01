@@ -154,26 +154,25 @@ class Hotel extends DataHandler {
     if (credentials.username === "manager" 
     && credentials.password === password) {
       let currentUser = new Manager()
-      // this.getAllData(this, 'users', 'bookings', 'rooms')
       return currentUser
     } else if (credentials.username.includes('customer') 
     && credentials.password === password) {
       return this.getData('users')
         .then(() => {
-          return this.checkUserId(credentials.username)
+          if (this.checkUserId(credentials.username) !== false) {
+            return this.currentUser = this.checkUserId(credentials.username)
+          }
         })
-    } else {
-      return false
     }
   }
 
   checkUserId(username) {
     const id = parseInt(username.substring(8))
     const currentUser = this.findUser(id)
-    if (typeof currentUser !== 'object') {
-      return false
-    } else {
+    if (currentUser !== 'No user was found, please adjust your search') {
       return new Customer(currentUser, this.bookings, this.rooms)
+    } else {
+      return false
     }
   }
 
