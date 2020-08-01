@@ -20,12 +20,11 @@ class EventHandler {
       event.preventDefault()
       const userCredentials = page.getLogInInfoFromForm()
       page.hotel.authenticateUser(userCredentials)
-      .then(() => {
+        .then(() => {
           if (page.hotel.currentUser !== undefined) {
             page.goToRoomsPage()
           }
-        }
-      )
+        })
       // isAuthorized ? load next page: message on DOM, clear inputs
       // test line 23
     }

@@ -12,5 +12,3 @@ import './images/suite.jpg';
 import EventHandler from './EventHandler'
 
 const eventHandler = new EventHandler()
-
-
