@@ -1,0 +1,65 @@
+@import 'partials';
+
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  padding: 0em 2em;
+  width: 80%;
+}
+
+.card {
+  background-color: $linen;
+  border-radius: 2%;
+  height: 15em;
+  margin: 0em 0em 2em 2em;
+  overflow: hidden;
+  width: 30em;
+
+  button {
+    background-color: $warm-green;
+    border-radius: 10%;
+    color: $linen;
+    font-size: 1em;
+    padding: .5em;
+    position: relative;
+    bottom: -3em;
+    left: 6.5em;
+  }
+
+  &-title {
+    color: $linen;
+    font-size: 2em;
+    height: 1.3em;
+    padding: .2em;
+    background-color: $warm-green; 
+    width: 100%; 
+  }
+
+  &-info {
+    left: -5em;
+    margin: 1em;
+    overflow-x: show;
+    position: relative;
+    white-space: nowrap;
+    width: 2em;
+
+    .room-value {
+      color: $warm-green;
+      font-weight: bold;
+    }
+  }
+  
+  &-body {
+    color: $slate-black;
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 100%;
+      .room-image {
+        position: relative;
+        left: -5em;
+        height: 100%;
+      }
+  }
+}
