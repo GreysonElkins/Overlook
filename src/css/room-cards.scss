@@ -1,11 +1,27 @@
 @import 'partials';
 
+.card-container {
+  padding: 0em 2em;
+}
+
 .card {
   background-color: $linen;
   border-radius: 2%;
   height: 15em;
+  margin: 0em 0em 2em 2em;
+  overflow: hidden;
   width: 30em;
-  overflow-x: hidden;
+
+  button {
+    background-color: $warm-green;
+    border-radius: 10%;
+    color: $linen;
+    font-size: 1em;
+    padding: .5em;
+    position: relative;
+    bottom: -3em;
+    left: 6.5em;
+  }
 
   &-title {
     color: $linen;
@@ -27,7 +43,6 @@
     .room-value {
       color: $warm-green;
       font-weight: bold;
-
     }
   }
   

@@ -4,7 +4,6 @@ import Hotel from './Hotel'
 // to run findButtons on instantiation
 class EventHandler {
   constructor() {
-    this.hotel = new Hotel();
     this.buttons = this.findButtons()
   }
 
@@ -20,9 +19,9 @@ class EventHandler {
     if (event.target.id === 'log-in') {
       event.preventDefault()
       const userCredentials = page.getLogInInfoFromForm()
-      let isAuthorized = hotel.authenticateUser(userCredentials)
+      let isAuthorized = page.hotel.authenticateUser(userCredentials)
       if (isAuthorized === true) {
-        // this.loggedIn = true
+        page.goToRoomsPage()
       }
       // isAuthorized ? load next page: message on DOM, clear inputs
       // test line 23

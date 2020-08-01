@@ -30,7 +30,7 @@ describe("Event Handler", () => {
     chai.spy.on(Object.prototype, ["addEventListener"], () => {})
   })
   
-  describe("Set-up", () => {
+  describe("set-up", () => {
 
     it("should be a function", () => {
       expect(EventHandler).to.be.a("function")
@@ -58,7 +58,7 @@ describe("Event Handler", () => {
       // trying to set () => {} as a property of undefined?
     })
   })
-  describe("Login", () => {
+  describe("login", () => {
     it('should receive log-in info from form', () => {
       handler.buttonHandler(event, mockHelper)
       expect(mockHelper.getLogInInfoFromForm).to.have.been.called(1)
@@ -74,5 +74,9 @@ describe("Event Handler", () => {
       expect(handler.hotel.authenticateUser).to.have.been.called(1)
     })
   
+    it('should go to rooms page if the user is authenticated', () => {
+      handler.buttonHandler(event, mockHelper)
+      expect(mockHelper.goToRoomsPage).to.have.been.called(1)
+    })
   })
 })

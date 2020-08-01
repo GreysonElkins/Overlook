@@ -271,6 +271,7 @@ const inputNodes = [
         let list = "";
         return list.includes(query) ? true : false;
       },
+      add: () => {}
     },
   }, {
     id: "password",

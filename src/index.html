@@ -18,7 +18,7 @@
       </span>
     </nav>
   </header>
-  <section class="home-page hidden" id="home-page">
+  <section class="home-page" id="home-page">
     <nav>
       <button id="about-button" tabindex="0">About</button>
       <button id="rooms-button" tabindex="0">Rooms</button>
@@ -33,29 +33,30 @@
       </span>
       <span>
         <label for="password">password: </label>
-        <input id="password" type="autocomplete-password" tabindex="0"/>
+        <input id="password" type="password" tabindex="0"/>
       </span>
       <button tabindex="0" id="log-in">Login</button>
     </form>
   </section>
-  <section class="rooms-page" id="room-page">
+  <section class="rooms-page hidden" id="room-page">
     <section class="user-dashboard" id="user-dashboard"></section>
     <section class="card-container" id="card-container">
-      <section class="card" tabindex="0">
-        <div class="card-title room-value" id="roomType">
-          Magical Haunted Suite
-          <span class="room-value" id="number"></span>
+      <!-- <section class="card" tabindex="0">
+        <div class="card-title">
+          <span class="room-value" id="number">2</span>
+          <span class="room-value" id="roomType">Suite</span>
         </div>
         <div class="card-body">
           <img class="room-image" src="images/overlook.jpg" alt="default-room-icon"/>
           <div class="card-info">
-            Number of beds: <span class="room-value" id="numBeds">2asdfaer</span><br />
+            Number of beds: <span class="room-value" id="numBeds">2</span><br />
             Bed Size: <span class="room-value" id="bedSize">Queen</span><br />
             Bidet: <span class="room-value" id="bidet">none</span><br />
             Cost: <span class="room-value" id="costPerNight">100/night</span><br />
+            <button tabindex="0">Book it</button>
           </div>
         </div>
-      </section>
+      </section> -->
     </section>
   </section>
 </body>
