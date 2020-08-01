@@ -1,0 +1,46 @@
+@import 'partials';
+
+.card {
+  background-color: $linen;
+  border-radius: 2%;
+  height: 15em;
+  width: 30em;
+  overflow-x: hidden;
+
+  &-title {
+    color: $linen;
+    font-size: 2em;
+    height: 1.3em;
+    padding: .2em;
+    background-color: $warm-green; 
+    width: 100%; 
+  }
+
+  &-info {
+    left: -5em;
+    margin: 1em;
+    overflow-x: show;
+    position: relative;
+    white-space: nowrap;
+    width: 2em;
+
+    .room-value {
+      color: $warm-green;
+      font-weight: bold;
+
+    }
+  }
+  
+  &-body {
+    color: $slate-black;
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 100%;
+      .room-image {
+        position: relative;
+        left: -5em;
+        height: 100%;
+      }
+  }
+}

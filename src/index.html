@@ -3,8 +3,6 @@
   <head>
     <title>The Overlook Hotel</title>
   </head>
-  
-</section>
 <body>
   <header>
     <h1 tabindex="0">The Overlook Hotel</h1>
@@ -35,7 +33,7 @@
       </span>
       <span>
         <label for="password">password: </label>
-        <input id="password" type="password" tabindex="0"/>
+        <input id="password" type="autocomplete-password" tabindex="0"/>
       </span>
       <button tabindex="0" id="log-in">Login</button>
     </form>
@@ -43,8 +41,20 @@
   <section class="rooms-page" id="room-page">
     <section class="user-dashboard" id="user-dashboard"></section>
     <section class="card-container" id="card-container">
-      <section class="card">
-        
+      <section class="card" tabindex="0">
+        <div class="card-title room-value" id="roomType">
+          Magical Haunted Suite
+          <span class="room-value" id="number"></span>
+        </div>
+        <div class="card-body">
+          <img class="room-image" src="images/overlook.jpg" alt="default-room-icon"/>
+          <div class="card-info">
+            Number of beds: <span class="room-value" id="numBeds">2asdfaer</span><br />
+            Bed Size: <span class="room-value" id="bedSize">Queen</span><br />
+            Bidet: <span class="room-value" id="bidet">none</span><br />
+            Cost: <span class="room-value" id="costPerNight">100/night</span><br />
+          </div>
+        </div>
       </section>
     </section>
   </section>

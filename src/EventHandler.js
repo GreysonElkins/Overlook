@@ -4,7 +4,7 @@ import Hotel from './Hotel'
 // to run findButtons on instantiation
 class EventHandler {
   constructor() {
-    this.hotel = new Hotel ();
+    this.hotel = new Hotel();
     this.buttons = this.findButtons()
   }
 
