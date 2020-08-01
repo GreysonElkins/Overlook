@@ -36,31 +36,38 @@ class Page {
     })
   }
 
-  goToRoomsPage(rooms) {
-    this.populateRoomCards(rooms)
+  goToRoomsPage() {
+    this.populateRoomCards()
     this.hideElements('.home-page')
-    this.showElements('.room-page')
+    this.showElements('.rooms-page')
   }
   
-  populateRoomCards(rooms) {
-    const container = document.getElementById('card-container')
-    rooms.forEach(room => {
-      container.insertAdjacentHTML('beforeend', this.roomCardTemplate(room))
-    })
+  populateRoomCards() {
+    this.hotel.getData('rooms') 
+      .then(() => {
+        const container = document.getElementById('card-container')
+        this.hotel.rooms.forEach(room => {
+          console.log(room);
+          container.insertAdjacentHTML('beforeend', this.roomCardTemplate(room))
+        })
+      })
   }
   
   roomCardTemplate(room) {
     return `
       <section class="card" tabindex="0">
         <div class="card-title">
-        <span class="room-value" id="roomType">${room.roomtype}</span>
-        <span class="room-value" id="number">#${room.roomNumber}</span>
+          <span class="room-value" id="roomType">${room.roomType}</span>
         </div >
         <div class="card-body">
           <img class="room-image" src="images/overlook.jpg" 
-          <!-- a function for determining the image src -->
           alt="default-room-icon" />
+          <!-- a function for determining the image src -->
           <div class="card-info">
+            Room Number: <span class="room-value" id="number">
+              ${room.number}
+            </span>
+            <br />
             Number of beds: <span class="room-value" id="numBeds">
               ${room.numBeds}
             </span>
@@ -77,7 +84,7 @@ class Page {
               $${room.costPerNight}/night
             </span>
             <br />
-            <button class="booking-button" tabindex="0" id="${room.roomNumber}">
+            <button tabindex="0" id="${room.number}">
               Book it
             </button>
           </div>

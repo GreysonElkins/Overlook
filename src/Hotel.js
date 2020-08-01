@@ -153,13 +153,13 @@ class Hotel extends DataHandler {
     let password = "overlook2020"
     if (credentials.username === "manager" 
     && credentials.password === password) {
-      this.currentUser = new Manager()
+      let currentUser = new Manager()
       // this.getAllData(this, 'users', 'bookings', 'rooms')
-      return true
+      return currentUser
     } else if (credentials.username.includes('customer') 
     && credentials.password === password) {
       return this.getData('users')
-        .then(data => {
+        .then(() => {
           return this.checkUserId(credentials.username)
         })
     } else {
@@ -173,10 +173,15 @@ class Hotel extends DataHandler {
     if (typeof currentUser !== 'object') {
       return false
     } else {
-      this.currentUser = new Customer(currentUser, this.bookings, this.rooms)
-      return true
+      return new Customer(currentUser, this.bookings, this.rooms)
     }
   }
+
+  getData(src) {
+    return super.getData(src, this)
+  }
 }
+
+
 
 export default Hotel

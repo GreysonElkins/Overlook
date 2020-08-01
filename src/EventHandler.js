@@ -19,8 +19,8 @@ class EventHandler {
     if (event.target.id === 'log-in') {
       event.preventDefault()
       const userCredentials = page.getLogInInfoFromForm()
-      let isAuthorized = page.hotel.authenticateUser(userCredentials)
-      if (isAuthorized === true) {
+      let currentUser = page.hotel.authenticateUser(userCredentials)
+      if (typeof currentUser === 'object') {
         page.goToRoomsPage()
       }
       // isAuthorized ? load next page: message on DOM, clear inputs

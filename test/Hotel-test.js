@@ -1,11 +1,16 @@
-import 'chai'
-import { expect } from 'chai'
+const chai = require("chai")
+const expect = chai.expect
+const spies = require("chai-spies")
+chai.use(spies)
+
 import Hotel from '../src/Hotel'
 import Customer from '../src/Customer'
 import Manager from '../src/Manager'
 import {users, rooms, bookings, allBooked, junk} from './faux-data'
 
-describe.skip('Hotel', () => {
+
+
+describe('Hotel', () => {
   
   let overlook;
 
@@ -200,15 +205,34 @@ describe.skip('Hotel', () => {
 
   describe('user authentification', () => {
 
+    let mockPromise
+    let responseObject 
+    
     beforeEach(() => {
+      
+      responseObject = {
+        then: () => {
+          return responseObject
+        },
+        catch: () => {
+          return responseObject
+        }
+      }
+
+      global.document = {}
+      global.fetch = () => {
+        return responseObject
+      }
+      mockPromise = {}
       overlook.storeData(users);
-      const fetch = () => {}
+      chai.spy.on(global, 'fetch') 
+      // chai.spy.on(fetch, ['then'], () => {})
     })
     
     it('should allow a manager to log in with the right password', () => {
       const managerCredentials = {username: 'manager', password: 'overlook2020'}
       let result = overlook.authenticateUser(managerCredentials) 
-      expect(result).to.equal(true)
+      expect(result).to.be.an.instanceOf(Manager)
     })
 
     it('should not allow a manager to log in with the wrong password', () => {
@@ -222,17 +246,17 @@ describe.skip('Hotel', () => {
 
     it('should be able to find customer\'s id', () => {
       let user = overlook.checkUserId('customer1')
-      expect(user).to.deep.equal(true)
+      expect(user).to.deep.equal(users[0])
     })
 
     it('should allow a client to log in with the correct password' +
-    'pull up their "account"', () => {
+    ' and pull up their "account"', () => {
       const clientCredentials = {
         username: 'customer1',
         password: 'overlook2020'
       }
       let result = overlook.authenticateUser(clientCredentials)
-      expect(result).to.equal(true)
+      expect(result).to.deep.equal(users[0])
     })
 
     it('should only allow users already in the system to log in', () => {
