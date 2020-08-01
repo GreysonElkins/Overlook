@@ -23,7 +23,12 @@ describe("Event Handler", () => {
       return {username: 'yoPapa', password: 'yoMama'}
     })
     chai.spy.on(fauxPage.hotel, ['authenticateUser'], () => {
-      return new Customer(users[0])
+      fauxPage.hotel.currentUser = "YoPapa"
+      return {then: () => {
+        if (fauxPage.hotel.currentUser !== undefined) {
+          fauxPage.goToRoomsPage();
+        }
+      }}
     })
     chai.spy.on(document, ["querySelectorAll"], () => {
       return ['node', 'node', 'node']

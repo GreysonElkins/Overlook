@@ -153,8 +153,8 @@ class Hotel extends DataHandler {
     let password = "overlook2020"
     if (credentials.username === "manager" 
     && credentials.password === password) {
-      let currentUser = new Manager()
-      return currentUser
+      this.currentUser = new Manager()
+      return this.currentUser
     } else if (credentials.username.includes('customer') 
     && credentials.password === password) {
       return this.getData('users')

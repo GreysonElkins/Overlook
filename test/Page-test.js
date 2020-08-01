@@ -12,8 +12,10 @@ describe("Page", () => {
   let page;
   let fauxNode;
   let fauxPage;
+  let fauxHotel;
 
   beforeEach(() => {
+    fauxHotel = {rooms: rooms}
     global.document = {}
     fauxNode = {
       classList: {
@@ -21,6 +23,17 @@ describe("Page", () => {
         remove: () => {}
       }
     }
+    global.fetch = () => { Promise }
+    chai.spy.on(fauxHotel, 'getData', () => {
+      return {
+        then: () => {
+          const container = document.getElementById("card-container");
+          fauxHotel.rooms.forEach((room) => {
+            container.insertAdjacentHTML("beforeend", page.roomCardTemplate(room));
+          })
+        } 
+      }
+    })
     Object.prototype.insertAdjacentHTML = () => {};
     chai.spy.on(document, ['querySelectorAll'], () => {
       return inputNodes;
@@ -37,7 +50,11 @@ describe("Page", () => {
     chai.spy.on(page, ['roomCardTemplate'], () => {
       return `html block`
     })
-    chai.spy.on(fauxPage, ['showElements', 'hideElements', 'populateRoomCards'], () => {})
+    chai.spy.on(fauxPage, [
+      'showElements', 
+      'hideElements', 
+      'populateRoomCards'
+    ], () => {})
   })
 
   describe('log-in functions', () => {
@@ -76,7 +93,7 @@ describe("Page", () => {
   describe('room cards', () => {
 
     it('should insert room cards for every room provided', () => {
-      page.populateRoomCards(rooms)
+      page.populateRoomCards(fauxHotel)
       expect(document.getElementById).to.have.been.called(1)
       expect(document.getElementById).to.have.been.called.with('card-container')
       // expect(Object.prototype.insertAdjacentHTML).to.have.been.called(8)
@@ -118,7 +135,6 @@ describe("Page", () => {
     it('should show the rooms page when going to it', () => {
       fauxPage.goToRoomsPage(rooms)
       expect(fauxPage.showElements).to.have.been.called(1)
-      expect(fauxPage.showElements).to.have.been.called.with('.room-page')
     })
   })
 })

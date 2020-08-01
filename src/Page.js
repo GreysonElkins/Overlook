@@ -42,12 +42,11 @@ class Page {
     this.showElements('.rooms-page')
   }
   
-  populateRoomCards() {
-    this.hotel.getData('rooms') 
+  populateRoomCards(hotel = this.hotel) {
+    hotel.getData('rooms') 
       .then(() => {
         const container = document.getElementById('card-container')
         this.hotel.rooms.forEach(room => {
-          console.log(room);
           container.insertAdjacentHTML('beforeend', this.roomCardTemplate(room))
         })
       })
