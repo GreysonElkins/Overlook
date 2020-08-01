@@ -4,6 +4,7 @@ const spies = require("chai-spies");
 chai.use(spies);
 
 import Page from '../src/Page'
+import Hotel from '../src/Hotel'
 import {rooms, inputNodes} from './faux-data'
 
 describe("Page", () => {
@@ -36,13 +37,17 @@ describe("Page", () => {
     chai.spy.on(page, ['roomCardTemplate'], () => {
       return `html block`
     })
-    chai.spy.on(fauxPage, ['hideElements', 'populateRoomCards'], () => {})
+    chai.spy.on(fauxPage, ['showElements', 'hideElements', 'populateRoomCards'], () => {})
   })
 
   describe('log-in functions', () => {
 
     it('should be a function', () => {
       expect(Page).to.be.a('function')
+    })
+
+    it('should have a Hotel on instantiating', () => {
+      expect(page.hotel).to.be.an.instanceOf(Hotel)
     })
   
     it('should be able to find inputs', () => {

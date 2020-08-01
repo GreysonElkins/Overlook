@@ -9,24 +9,25 @@ import {inputNodes} from './faux-data'
 
 describe("Event Handler", () => {
   let handler;
-  let mockHelper;
+  let fauxPage;
   let event;
 
   beforeEach(() => {
-    global.document = {}
-    mockHelper = {}
+    global.document = { }
+    fauxPage = {hotel: {}}
     event = {target: {id: 'log-in'}}
     Object.prototype.addEventListener = () => {}
     chai.spy.on(event, 'preventDefault', () => {})
-    chai.spy.on(mockHelper, ["goToRoomsPage", "getLogInInfoFromForm"], () => {
+    chai.spy.on(fauxPage, ["goToRoomsPage", "getLogInInfoFromForm"], () => {
       return {username: 'yoPapa', password: 'yoMama'}
     })
-    chai.spy.on(document, ["querySelectorAll"], (query) => {
+    chai.spy.on(fauxPage.hotel, ['authenticateUser'], () => {
+      return true
+    })
+    chai.spy.on(document, ["querySelectorAll"], () => {
       return ['node', 'node', 'node']
-      // if (query === 'buttons') return ['node', 'node', 'node']
     })
     handler = new EventHandler()
-    chai.spy.on(handler.hotel, ["authenticateUser"], () => { return true })
     chai.spy.on(Object.prototype, ["addEventListener"], () => {})
   })
   
@@ -40,9 +41,7 @@ describe("Event Handler", () => {
       expect(document.querySelectorAll).to.have.been.called(1)
     })
   
-    it('should have a Hotel on instantiating', () => {
-      expect(handler.hotel).to.be.an.instanceOf(Hotel)
-    })
+  
   
     it("should be able to find all buttons", () => {
       handler.findButtons()
@@ -60,23 +59,23 @@ describe("Event Handler", () => {
   })
   describe("login", () => {
     it('should receive log-in info from form', () => {
-      handler.buttonHandler(event, mockHelper)
-      expect(mockHelper.getLogInInfoFromForm).to.have.been.called(1)
+      handler.buttonHandler(event, fauxPage)
+      expect(fauxPage.getLogInInfoFromForm).to.have.been.called(1)
     })
   
     it('shouldn\'t refresh the page when log-in is clicked', () => {
-      handler.buttonHandler(event, mockHelper)
+      handler.buttonHandler(event, fauxPage)
       expect(event.preventDefault).to.have.been.called(1)
     })
   
     it('should use the hotel to authenticate the user', () => {
-      handler.buttonHandler(event, mockHelper)
-      expect(handler.hotel.authenticateUser).to.have.been.called(1)
+      handler.buttonHandler(event, fauxPage)
+      expect(fauxPage.hotel.authenticateUser).to.have.been.called(1)
     })
   
     it('should go to rooms page if the user is authenticated', () => {
-      handler.buttonHandler(event, mockHelper)
-      expect(mockHelper.goToRoomsPage).to.have.been.called(1)
+      handler.buttonHandler(event, fauxPage)
+      expect(fauxPage.goToRoomsPage).to.have.been.called(1)
     })
   })
 })

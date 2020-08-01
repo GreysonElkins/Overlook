@@ -15,7 +15,7 @@ class EventHandler {
     return buttons
   }
 
-  buttonHandler(event, page = new Page(), hotel = this.hotel) {
+  buttonHandler(event, page = new Page()) {
     if (event.target.id === 'log-in') {
       event.preventDefault()
       const userCredentials = page.getLogInInfoFromForm()

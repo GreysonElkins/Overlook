@@ -154,10 +154,14 @@ class Hotel extends DataHandler {
     if (credentials.username === "manager" 
     && credentials.password === password) {
       this.currentUser = new Manager()
+      // this.getAllData(this, 'users', 'bookings', 'rooms')
       return true
     } else if (credentials.username.includes('customer') 
     && credentials.password === password) {
-      return this.checkUserId(credentials.username)
+      return this.getData('users')
+        .then(data => {
+          return this.checkUserId(credentials.username)
+        })
     } else {
       return false
     }

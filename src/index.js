@@ -16,4 +16,3 @@ import DataHandler from './DataHandler'
 const eventHandler = new EventHandler()
 const dataHandler = new DataHandler()
 
-dataHandler.getAllData(eventHandler.hotel, 'users', 'rooms', 'bookings')
