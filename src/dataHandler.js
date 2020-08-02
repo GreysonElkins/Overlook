@@ -11,7 +11,7 @@ class DataHandler {
   getAllData (hotel) {
     let args = Array.from(arguments);
     args.shift();
-    args.forEach(argument => this.getData(argument, hotel))
+    return args.forEach(argument => this.getData(argument, hotel))
   }
 }
 

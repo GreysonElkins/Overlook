@@ -1,13 +1,14 @@
 import DataHandler from './DataHandler'
 import Customer from './Customer'
 import Manager from './Manager';
-
+import moment from 'moment'
 class Hotel extends DataHandler {
   constructor() {
     super();
     this.rooms;
     this.bookings;
     this.users;
+    this.today = moment().format('YYYY/MM/DD')
   }
 
   storeData(input) {
@@ -64,7 +65,7 @@ class Hotel extends DataHandler {
     }
   }
 
-  findAvailableRooms(date) {
+  findAvailableRooms(date = this.today) {
     if (this.isDate(date) === false) return 'The date is an unexpected format'
     let bookedRooms = this.findBookedRoomNumbers(date)
     if (!Array.isArray(bookedRooms)) return bookedRooms
@@ -108,7 +109,7 @@ class Hotel extends DataHandler {
     }
   }
 
-  calculateDailyRevenue(date) {
+  calculateDailyRevenue(date = this.today) {
     let bookedRooms = this.findBookedRoomNumbers(date);
     if (!Array.isArray(bookedRooms)) return bookedRooms
     return this.rooms.reduce((revenue, room) => {

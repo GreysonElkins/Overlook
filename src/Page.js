@@ -1,8 +1,7 @@
 import Hotel from "./Hotel"
 import Manager from "./Manager"
 import Customer from "./Customer"
-import { users } from "../test/faux-data"
-
+import moment from "moment"
 
 class Page {
   constructor() {
@@ -26,7 +25,6 @@ class Page {
     args.forEach(argument => {
       const element = document.querySelectorAll(argument)
       element.forEach(thing => thing.classList.add('hidden'))
-      // element.classList.add('hidden')
     })
   }
 
@@ -35,7 +33,6 @@ class Page {
     args.forEach(argument => {
       const element = document.querySelectorAll(argument)
       element.forEach((thing) => thing.classList.remove("hidden"));  
-      // element.classList.remove('hidden')
     })
   }
 
@@ -44,7 +41,6 @@ class Page {
       .then(() => this.findLoggedInElements())
     this.hideElements('.home-page', '.sign-in-pop-up')
     this.showElements('.rooms-page', '.sign-in-or-out')
-    // this.findLoggedInElements()
   }
   
   populateRoomCards(hotel = this.hotel) {
@@ -88,7 +84,8 @@ class Page {
               $${room.costPerNight}/night
             </span>
             <br />
-            <button class="booking-button hidden" tabindex="0" id="${room.number}">
+            <button class="booking-button hidden" 
+            tabindex="0" id="${room.number}">
               Book it
             </button>
           </div>
@@ -104,15 +101,15 @@ class Page {
       this.showElements('#user-bar-signed-in', '.booking-button', '.user-pane')
       this.hideElements('#user-bar-signed-out')
       this.placeUserName()
-      // let bookingButtons = document.querySelectorAll('.booking-button')
-      // bookingButtons.forEach(button => this.showElements(button))
     }
     if (this.hotel.currentUser instanceof Manager) {
       this.showElements('.manager-dash', '.user-search')
       this.hideElements('.guest-dash')
-    } else if(this.hotel.currentUser instanceof Customer) {
+      this.populateDashboard('.manager-info')
+    } else if (this.hotel.currentUser instanceof Customer) {
       this.hideElements('.manager-dash', '.user-search')
       this.showElements('.guest-dash')
+      this.populateDashboard('.guest-dash')
     }
 
   }
@@ -124,6 +121,74 @@ class Page {
     } else {
       username.innerText = 'Manager'
     }
+  }
+
+  populateDashboard(dash) {
+    this.populateUserSection(dash)
+  }
+
+  populateUserSection(dash) {
+    const dashboard = document.querySelector(dash)
+    const promise1 = this.hotel.getData('rooms')
+    const promise2 = this.hotel.getData('bookings')
+    let html;
+
+    Promise.all([promise1, promise2])
+      .then(() => {
+        html = this.getDashboardHtml()
+        dashboard.innerHTML = html 
+      })
+  }
+
+  getDashboardHtml() {
+    const date = moment(this.hotel.today).format('MMM DD')
+
+    if (this.hotel.currentUser instanceof Manager) {
+      return `
+      <h3>Manager Dashboard</h3>
+      Rooms available for <date>${date}</date>: 
+      <span id="roomsAvailable">
+        ${this.hotel.findAvailableRooms().length}
+      </span><br />
+      Revenue on <date>${date}</date>: 
+      <span id="revenue">$${this.hotel.calculateDailyRevenue()}</span><br />
+      Percentage of rooms occupied on <date>${date}</date>:
+      <span id="percentageBooked">
+      ${(this.hotel.rooms.length - this.hotel.findAvailableRooms().length)
+        / this.hotel.rooms.length 
+        * 100}%
+      </span>`;
+    } else if (this.hotel.currentUser instanceof Customer) {
+      const user = this.hotel.currentUser
+      user.bookings = user.findBookings(this.hotel.bookings)
+      user.accountBalance = user.findAccountBalance(this.hotel.rooms)
+      console.log(user)
+      return `
+      <hr>
+      <h3>Guest Dashboard</h3>
+      Account Balance: <span id="accountBalance">
+        $${user.accountBalance}
+      </span><br >
+      Up-coming Visits: <ul id="upcoming-visits">
+        ${this.populateUserBookingLists('upcoming')}
+      </ul><br />
+      Previous Visits: <ul id="previous-visits">
+        ${this.populateUserBookingLists('previous')}
+      </ul>
+      `;
+    }
+  }
+  
+  populateUserBookingLists(list) {
+    return this.hotel.currentUser.bookings.reduce((listItems, booking) => {
+      let item = `<li>${moment(booking.date).format('DD MMM YYYY')}</li>`;
+      if (list === 'upcoming' && moment(booking.date) >= moment()) {
+        listItems += item
+      } else if (list === 'previous' && moment(booking.date) < moment()) {
+        listItems += item
+      }
+      return listItems
+    }, '')
   }
 
   findRoomImageSource(room) {
