@@ -42,15 +42,29 @@ class Page {
     this.hideElements('.home-page', '.sign-in-pop-up')
     this.showElements('.rooms-page', '.sign-in-or-out')
   }
+
+
   
-  populateRoomCards(hotel = this.hotel) {
-    return hotel.getData('rooms') 
+  populateRoomCards(rooms) {
+    let promise1 = this.hotel.getData('bookings')
+    let promise2 = this.hotel.getData('rooms')
+    
+    return Promise.all([promise1, promise2]) 
       .then(() => {
+        if (rooms === undefined) {
+          rooms = this.hotel.findAvailableRooms()
+        }
         const container = document.getElementById('card-container')
-        this.hotel.rooms.forEach(room => {
+        container.innerHTML = ''
+        rooms.forEach(room => {
           container.insertAdjacentHTML('beforeend', this.roomCardTemplate(room))
         })
       })
+    
+    // return this.hotel.getData('rooms') 
+    //   .then(() => {
+    //     })
+    //   })
   }
   
   roomCardTemplate(room) {
@@ -140,6 +154,7 @@ class Page {
         bedTagHtml = this.populateRoomTags('bedSize')
         roomTags.innerHTML = roomTagHtml
         bedTags.innerHTML = bedTagHtml
+        this.addTagListeners()
       })
 
     Promise.all([promise1, promise2])
@@ -222,13 +237,78 @@ class Page {
     return this.hotel.rooms.reduce((roomTagsHtml, room) => {
       if (!roomTags.includes(room[key])) {
         roomTags.push(room[key])
-        let id = room[key].split(' ').join('-')
         roomTagsHtml += `
-        <button class="room-tag" id="${id}">${room[key]}</button>`
+        <button class="room-tag" id="${key}">${room[key]}</button>`
       }
       return roomTagsHtml
     }, '')
   }
+
+  addTagListeners() {
+    const tags = document.querySelectorAll('.room-tag')
+    for (let i = 0; i < tags.length; i ++) {
+      tags[i].addEventListener('click', this.toggleTagState)
+    }
+  }
+ 
+  toggleTagState(event) {
+    let tag = event.target
+    if (tag.classList.contains('selected')) {
+      tag.classList.remove('selected')
+      tag.style.backgroundColor = "#4E241E"
+    } else {
+      tag.classList.add('selected')
+      tag.style.backgroundColor = "#283D3B"
+    }
+  }
+
+  checkTags() {
+    let promise1 = this.hotel.getData('bookings')
+    let promise2 = this.hotel.getData('rooms')
+    
+    const dateInQuestion = this.getDateInQuestion() 
+    const selectedRoomTags = this.getSelectedTags('#roomType')
+    const selectedBedTags = this.getSelectedTags('#bedSize')
+    const numberOfBeds = document.getElementById('number-beds').value
+    const wantsBidet = document.getElementById('select-bidet').checked
+
+    Promise.all([promise1, promise2])
+      .then(() => {
+        let filteredRooms = this.hotel.findAvailableRoomsByWhatever(
+          dateInQuestion, 
+          selectedRoomTags, 
+          selectedBedTags, 
+          numberOfBeds, 
+          wantsBidet
+        ) 
+        this.populateRoomCards(filteredRooms)
+      })
+
+  } 
+
+  getSelectedTags(dataType) {
+    const roomTags = document.querySelectorAll(dataType)
+    const selectedTags = []
+    roomTags.forEach(tag => {
+      if (tag.classList.contains('selected')) {
+        let value = tag.innerText
+        selectedTags.push(value)
+      }
+    })
+    return selectedTags
+  } 
+
+  getDateInQuestion() {
+    const input = document.getElementById('date-in-question').value
+    if (input === "") {
+      return this.hotel.today
+    } else {
+      let unformattedDate = new Date(input)
+      const dateInQuestion = moment(unformattedDate).format('YYYY/MM/DD')
+      return dateInQuestion
+    }
+  }
+
 }
 
 export default Page

@@ -227,8 +227,10 @@ describe("Page", () => {
     beforeEach(() => {
       chai.spy.on(fauxPage.hotel, "getData", () => mockResponse)
       chai.spy.on(fauxPage, 'getDashboardHtml', () => {})
-      // chai.spy.on(page.hotel, ['findAvailableRooms', 'calculateDailyRevenue'])
-      // chai.spy.on(page.hotel.currentUser, ['findBookings', 'findAccountBalance'])
+      // chai.spy.on(page.hotel, 
+      // ['findAvailableRooms', 'calculateDailyRevenue'])
+      // chai.spy.on(page.hotel.currentUser, 
+      // ['findBookings', 'findAccountBalance'])
       // chai.spy.on(page, 'populateUserBookingLists')
       // chai.spy.on(Object.prototype, 'innerHTML', () => {})
     })
@@ -245,7 +247,8 @@ describe("Page", () => {
       // expect(Object.prototype.innerHtml).to.have.been.called(1)
     })
 
-    it.skip('should run calculations based on whether a user is a Manager or Customer', () => {
+    it.skip('should run calculations based on whether a user' + 
+    'is a Manager or Customer', () => {
       page.hotel.currentUser = new Manager() 
       console.log(page.hotel.currentUser)
       page.getDashboardHtml()

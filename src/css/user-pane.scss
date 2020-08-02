@@ -17,13 +17,19 @@ h3{
 
   button {
     font-size: .8em;
-    color: $slate-black;
+    color: $linen;
     border: 1px solid;
     border-radius: 3%;
-    background-color: $wheat;
+    background-color: $chocolate-brown;
+
   }
 }
 
+.selected {
+  background-color: $warm-green;
+  color: $linen;
+  border-color: $linen
+}
 
 
 .user-search {
