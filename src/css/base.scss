@@ -25,6 +25,10 @@ header {
   padding: 1em 1em 0em 1em;
 }
 
+.page-container {
+  display: flex;
+}
+
 nav {
   margin-top: 2em;
 }
@@ -56,7 +60,7 @@ button {
   flex-direction:column;
   align-items: center;
   // width: 100%;
-
+  margin: 0 auto;
   nav {
     display: flex;
     justify-content: space-around;

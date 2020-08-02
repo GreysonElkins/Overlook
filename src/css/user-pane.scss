@@ -1,0 +1,28 @@
+@import 'partials';
+h3{
+  color: $slate-black;
+}
+
+.user-pane {
+  background-color: $linen;
+  border-radius: 5%;
+  height: auto;
+  padding: 1em;
+  width: 15em;
+  font-size: .75em;
+  margin-left: 3em;
+  position: fixed;
+  float: right;
+
+  button {
+    font-size: .8em;
+    color: $slate-black;
+    border: 1px solid;
+    border-radius: 3%;
+    background-color: $wheat;
+  }
+}
+
+.user-search {
+  display: flex;
+}

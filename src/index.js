@@ -1,4 +1,5 @@
 import './css/base.scss';
+import './css/user-pane.scss'
 import './css/room-cards.scss';
 
 import './images/background.png';

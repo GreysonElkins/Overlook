@@ -18,32 +18,47 @@
       </span>
     </nav>
   </header>
-  <section class="home-page hidden" id="home-page">
-    <nav>
-      <button id="about-button" tabindex="0">About</button>
-      <button id="rooms-button" tabindex="0">Rooms</button>
-    </nav>
-    <img src="images/overlook.jpg" class="overlook-image"
-    alt="The Overlook, a hotel just below the peak of a snowcapped
-     mountain during summer, soft clouds billow over the peak under a blue sky"/>
-    <!-- <form class="main-log-in" id="main-log-in">
-      <span>
-        <label for="username">username: </label>
-        <input id="username" tabindex="0"/>
-      </span>
-      <span>
-        <label for="password">password: </label>
-        <input id="password" type="password" tabindex="0"/>
-      </span>
-      <button tabindex="0" id="log-in">Login</button>
-    </form> -->
-  </section>
-  <section class="user-pane" id="user-pane">
-
-  </section>
-  <section class="rooms-page hidden" id="rooms-page">
-    <section class="user-dashboard" id="user-dashboard"></section>
-    <section class="card-container" id="card-container">
+  <section class="page-container">
+    <section class="home-page" id="home-page">
+      <nav>
+        <button id="about-button" tabindex="0">About</button>
+        <button id="rooms-button" tabindex="0">Rooms</button>
+      </nav>
+      <img src="images/overlook.jpg" class="overlook-image"
+      alt="The Overlook, a hotel just below the peak of a snowcapped
+      mountain during summer, soft clouds billow over the peak under a blue sky"/>
+    </section>
+    <section class="user-pane hidden" id="user-pane">
+      <section class="search-window">
+        <h3>Booking:</h3>
+        <input type="date"/>
+        <section class="manager-dash hidden">
+          <span class="user-search" tabindex="0">
+            <input />
+            <button tabindex="0" id="user-search">search</button>
+            <span id="foundUser"></span>
+          </span>
+          <hr>
+          <section class="manager-info hidden" tabindex="0">
+            <h3>Manager Dashboard</h3>
+            Rooms available for <date></date>: <span id="roomsAvailable"></span><br />
+            Revenue on <date></date>: <span id="revenue"></span><br />
+            Percentage of rooms occupied on <date></date>: <span id="percentageBooked"></span>
+          </section>
+        </section>
+        <section class="user-dash hidden" tabindex="0">
+          <hr>
+          <h3>Guest Dashboard</h3>
+          Account Balance: $<span id="accountBalance"></span><br >
+          Up-coming Visits: <ul id="upcoming-visits"></ul><br />
+          Previous Visits: <ul id="previous-visits"></ul>
+        </section>
+      </section>
+    </section>
+    <section class="rooms-page hidden" id="rooms-page">
+      <section class="user-dashboard" id="user-dashboard"></section>
+      <section class="card-container" id="card-container">
+      </section>
     </section>
   </section>
   <section class="sign-in-pop-up hidden" id="sign-in-pop-up"> 
