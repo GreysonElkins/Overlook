@@ -2,7 +2,9 @@
 
 body {
   background-image: url('../images/background.png');
+  background-attachment: fixed;
   padding: 0em;
+  overflow: scroll;
 }
 
 h1 {

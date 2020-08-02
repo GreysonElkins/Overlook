@@ -7,10 +7,10 @@
   <header>
     <h1 tabindex="0">The Overlook Hotel</h1>
     <nav>
-      <span class="sign-in-or-out hidden">
+      <span class="sign-in-or-out">
         <button id="about-button" tabindex="0">About</button>
         <img class="icon" src="/images/user-icon.png" alt="user icon" tabindex="0"/>
-        <button class="hidden" id="user-bar-signed-out" tabindex="0">sign in</button>
+        <button class="" id="user-bar-signed-out" tabindex="0">sign in</button>
         <span class="hidden" id="user-bar-signed-in">
           <span class="" id="user-name" tabindex="0" tabindex="0">Jack Torrence</span> |
           <button id="sign-out" tabindex="0"> sign-out</button>
@@ -18,7 +18,7 @@
       </span>
     </nav>
   </header>
-  <section class="home-page" id="home-page">
+  <section class="home-page hidden" id="home-page">
     <nav>
       <button id="about-button" tabindex="0">About</button>
       <button id="rooms-button" tabindex="0">Rooms</button>
@@ -26,7 +26,7 @@
     <img src="images/overlook.jpg" class="overlook-image"
     alt="The Overlook, a hotel just below the peak of a snowcapped
      mountain during summer, soft clouds billow over the peak under a blue sky"/>
-    <form class="main-log-in" id="main-log-in">
+    <!-- <form class="main-log-in" id="main-log-in">
       <span>
         <label for="username">username: </label>
         <input id="username" tabindex="0"/>
@@ -36,7 +36,10 @@
         <input id="password" type="password" tabindex="0"/>
       </span>
       <button tabindex="0" id="log-in">Login</button>
-    </form>
+    </form> -->
+  </section>
+  <section class="user-pane" id="user-pane">
+
   </section>
   <section class="rooms-page hidden" id="rooms-page">
     <section class="user-dashboard" id="user-dashboard"></section>
