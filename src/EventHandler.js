@@ -19,7 +19,6 @@ class EventHandler {
     if (event.target.id === 'log-in') {
       event.preventDefault()
       const userCredentials = page.getLogInInfoFromForm()
-      console.log(userCredentials)
       page.hotel.authenticateUser(userCredentials)
         .then(() => {
           if (page.hotel.currentUser !== undefined) {

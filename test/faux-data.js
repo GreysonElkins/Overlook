@@ -287,18 +287,6 @@ const inputNodes = [
       remove: () => {}
     },
   },
-  {
-    id: "password",
-    value: "your self, as a child",
-    classList: {
-      contains: (query) => {
-        let list = "hidden";
-        return list.includes(query) ? true : false;
-      },
-      add: () => {},
-      remove: () => {}
-    },
-  },
 ];
 
 

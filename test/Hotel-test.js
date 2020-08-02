@@ -228,8 +228,8 @@ describe('Hotel', () => {
     
     it('should allow a manager to log in with the right password', () => {
       const managerCredentials = {username: 'manager', password: 'overlook2020'}
-      let result = overlook.authenticateUser(managerCredentials) 
-      expect(result).to.be.an.instanceOf(Manager)
+      overlook.authenticateUser(managerCredentials) 
+      expect(overlook.currentUser).to.be.an.instanceOf(Manager)
     })
 
     it('should not allow a manager to log in with the wrong password', () => {

@@ -1,5 +1,6 @@
 import Hotel from "./Hotel"
 import Manager from "./Manager"
+import Customer from "./Customer"
 import { users } from "../test/faux-data"
 
 
@@ -63,9 +64,9 @@ class Page {
           <span class="room-value" id="roomType">${room.roomType}</span>
         </div >
         <div class="card-body">
-          <img class="room-image" src="images/${this.findRoomImageSource(room)}.jpg" 
+          <img class="room-image" 
+          src="images/${this.findRoomImageSource(room)}.jpg" 
           alt="default-room-icon" />
-          <!-- a function for determining the image src -->
           <div class="card-info">
             Room Number: <span class="room-value" id="number">
               ${room.number}
@@ -100,12 +101,20 @@ class Page {
       this.showElements('#user-bar-signed-out')
       this.hideElements('#user-bar-signed-in')
     } else {
-      this.showElements('#user-bar-signed-in', '.booking-button')
+      this.showElements('#user-bar-signed-in', '.booking-button', '.user-pane')
       this.hideElements('#user-bar-signed-out')
       this.placeUserName()
       // let bookingButtons = document.querySelectorAll('.booking-button')
       // bookingButtons.forEach(button => this.showElements(button))
     }
+    if (this.hotel.currentUser instanceof Manager) {
+      this.showElements('.manager-dash', '.user-search')
+      this.hideElements('.guest-dash')
+    } else if(this.hotel.currentUser instanceof Customer) {
+      this.hideElements('.manager-dash', '.user-search')
+      this.showElements('.guest-dash')
+    }
+
   }
 
   placeUserName() {

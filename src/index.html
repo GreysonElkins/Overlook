@@ -30,6 +30,15 @@
     </section>
     <section class="user-pane hidden" id="user-pane">
       <section class="search-window">
+        <h3>Filter Rooms:</h3>
+        <div id="filter-tags">
+        </div>
+        Number of Beds: <input id=/> <br/>
+        Type of Beds:<div id="beds">
+
+        </div><br />
+        Bidet? <input type="radio">
+        <hr>
         <h3>Booking:</h3>
         <input type="date"/>
         <section class="manager-dash hidden">
@@ -39,14 +48,14 @@
             <span id="foundUser"></span>
           </span>
           <hr>
-          <section class="manager-info hidden" tabindex="0">
+          <section class="manager-info" tabindex="0">
             <h3>Manager Dashboard</h3>
             Rooms available for <date></date>: <span id="roomsAvailable"></span><br />
             Revenue on <date></date>: <span id="revenue"></span><br />
             Percentage of rooms occupied on <date></date>: <span id="percentageBooked"></span>
           </section>
         </section>
-        <section class="user-dash hidden" tabindex="0">
+        <section class="guest-dash hidden" tabindex="0">
           <hr>
           <h3>Guest Dashboard</h3>
           Account Balance: $<span id="accountBalance"></span><br >
@@ -56,7 +65,6 @@
       </section>
     </section>
     <section class="rooms-page hidden" id="rooms-page">
-      <section class="user-dashboard" id="user-dashboard"></section>
       <section class="card-container" id="card-container">
       </section>
     </section>

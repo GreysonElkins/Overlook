@@ -5,7 +5,9 @@ chai.use(spies);
 
 import Page from '../src/Page'
 import Hotel from '../src/Hotel'
-import {rooms, inputNodes} from './faux-data'
+import {users, rooms, inputNodes} from './faux-data'
+import Manager from '../src/Manager';
+import Customer from '../src/Customer';
 
 describe("Page", () => {
   
@@ -176,6 +178,42 @@ describe("Page", () => {
       expect(fauxPage.showElements).to.have.been.called.with(
         '#user-bar-signed-in', '.booking-button'
       )
+    })
+      
+    it('should show the user-pane if the user is defined', () => {
+      fauxPage.hotel.currentUser = "Danny Torrence"     
+      fauxPage.findLoggedInElements()
+      expect(fauxPage.showElements).to.have.been.called(1)
+      expect(fauxPage.showElements).to.have.been.called.with(
+        '.user-pane'
+      )
+    })
+
+    it('should show the manager-dash / search bar if the user is a manager' + 
+    ` and hide the guest-dash`, () => {
+      fauxPage.hotel.currentUser = new Manager()
+      fauxPage.findLoggedInElements()
+      expect(fauxPage.showElements).to.have.been.called(2)
+      expect(fauxPage.showElements).to.have.been.called.with(
+        '.manager-dash', '.user-search'
+      )
+      expect(fauxPage.hideElements).to.have.been.called(2)
+      expect(fauxPage.hideElements).to.have.been.called.with('.guest-dash')
+    })
+
+    it('should show the guest-dash / hide the search bar and manager dash' + 
+    ' if the user is a customer', () => {
+      fauxPage.hotel.currentUser = new Customer(users[0]) 
+      fauxPage.findLoggedInElements();
+      expect(fauxPage.hideElements).to.have.been.called(2);
+      expect(fauxPage.hideElements).to.have.been.called.with(
+        ".manager-dash",
+        ".user-search"
+      );
+      expect(fauxPage.showElements).to.have.been.called(2);
+      expect(fauxPage.showElements).to.have.been.called.with(
+        ".guest-dash"
+      );
     })
   })
 })

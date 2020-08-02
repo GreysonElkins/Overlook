@@ -46,8 +46,6 @@ describe("Event Handler", () => {
       expect(document.querySelectorAll).to.have.been.called(1)
     })
   
-  
-  
     it("should be able to find all buttons", () => {
       handler.findButtons()
       expect(document.querySelectorAll).to.have.been.called(2)
@@ -88,8 +86,8 @@ describe("Event Handler", () => {
     })
 
     it('should go to the rooms page when rooms is clicked', () => {
-      handler.buttonHandler(roomEvent, fauxPage);
-      expect(fauxPage.goToRoomsPage).to.have.been.called(1);
+      handler.buttonHandler(roomEvent, fauxPage)
+      expect(fauxPage.goToRoomsPage).to.have.been.called(1)
     })
   })
 })
