@@ -34,6 +34,8 @@ class EventHandler {
     } else if (event.target.id === 'sign-out') {
       page.hotel.currentUser = undefined
       location.reload()
+    } else {
+      console.log(event.target.id)
     }
   }
 }

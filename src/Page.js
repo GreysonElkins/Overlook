@@ -124,38 +124,47 @@ class Page {
   }
 
   populateDashboard(dash) {
-    this.populateUserDashboardData(dash)
-  }
-
-  populateUserDashboardData(dash) {
     const dashboard = document.querySelector(dash)
+    const roomTags = document.getElementById('filter-rooms')
+    const bedTags = document.getElementById('filter-beds')
+
     const promise1 = this.hotel.getData('rooms')
     const promise2 = this.hotel.getData('bookings')
-    let html;
+    let userHtml;
+    let roomTagHtml;
+    let bedTagHtml;
+
+    Promise.resolve(promise1)
+      .then(() => {
+        roomTagHtml = this.populateRoomTags('roomType')
+        bedTagHtml = this.populateRoomTags('bedSize')
+        roomTags.innerHTML = roomTagHtml
+        bedTags.innerHTML = bedTagHtml
+      })
 
     Promise.all([promise1, promise2])
       .then(() => {
-        html = this.getDashboardHtml()
-        dashboard.innerHTML = html 
+        userHtml = this.getUserDashboardData()
+        dashboard.innerHTML = userHtml
       })
   }
 
-  getDashboardHtml() {
+  getUserDashboardData() {
     const date = new Date(this.hotel.today) 
-    moment(date).format('MMM DD')
+    const printDate = moment(date).format('MMM DD')
 
     if (this.hotel.currentUser instanceof Manager) {
       return `
-      <h3tabindex="0">Manager Dashboard</h3>
-      Rooms available for <date>${date}</date>: 
+      <h3tabindex="0">Manager Dashboard</h3><br />
+      Rooms available for <date>$${printDate}</date>: 
       <span id="roomsAvailable" tabindex="0">
         ${this.hotel.findAvailableRooms().length}
       </span><br />
-      Revenue on <date>${date}</date>: 
+      Revenue on <date>$${printDate}</date>: 
       <span id="revenue" tabindex="0">
         $${this.hotel.calculateDailyRevenue()}
       </span><br />
-      Percentage of rooms occupied on <date>${date}</date>:
+      Percentage of rooms occupied on <date>$${printDate}</date>:
       <span id="percentageBooked" tabindex="0">
       ${((this.hotel.rooms.length - this.hotel.findAvailableRooms().length) /
         this.hotel.rooms.length) *
@@ -196,6 +205,29 @@ class Page {
 
   findRoomImageSource(room) {
     return room.roomType.split(' ').join('-');
+  }
+
+  displayPriceFilterSliderValue() {
+    const slider = document.getElementById('max-price');
+    const display = document.getElementById('slider-value')
+    display.innerText = slider.value;
+
+    slider.oninput = function() {
+      display.innerText = this.value; 
+    }
+  }
+
+  populateRoomTags(key) {
+    let roomTags = []
+    return this.hotel.rooms.reduce((roomTagsHtml, room) => {
+      if (!roomTags.includes(room[key])) {
+        roomTags.push(room[key])
+        let id = room[key].split(' ').join('-')
+        roomTagsHtml += `
+        <button class="room-tag" id="${id}">${room[key]}</button>`
+      }
+      return roomTagsHtml
+    }, '')
   }
 }
 
