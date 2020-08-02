@@ -91,6 +91,20 @@ button {
   }
 }
 
+.sign-in-pop-up {
+  @extend .main-log-in;
+  box-shadow: 12px 12px 2px 1px rgba(0, 0, 0, .5);
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  top: 40%;
+  left: 40%;
+  height: 6em;
+  width: 10em;
+  z-index: 3;
+}
+
 .hidden {
   display: none;
 }

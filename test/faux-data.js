@@ -271,9 +271,11 @@ const inputNodes = [
         let list = "";
         return list.includes(query) ? true : false;
       },
-      add: () => {}
+      add: () => {},
+      remove: () => {}
     },
-  }, {
+  },
+  {
     id: "password",
     value: "yoMama",
     classList: {
@@ -281,8 +283,11 @@ const inputNodes = [
         let list = "";
         return list.includes(query) ? true : false;
       },
+      add: () => {},
+      remove: () => {}
     },
-  }, {
+  },
+  {
     id: "password",
     value: "your self, as a child",
     classList: {
@@ -290,6 +295,8 @@ const inputNodes = [
         let list = "hidden";
         return list.includes(query) ? true : false;
       },
+      add: () => {},
+      remove: () => {}
     },
   },
 ];

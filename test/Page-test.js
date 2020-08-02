@@ -9,32 +9,15 @@ import {rooms, inputNodes} from './faux-data'
 
 describe("Page", () => {
   
-  let page;
-  let fauxNode;
-  let fauxPage;
-  let fauxHotel;
+  let page
+  let fauxNode
+  let fauxPage
+  let fauxHotel
+  let mockResponse
 
   beforeEach(() => {
-    fauxHotel = {rooms: rooms}
+    //MOCK DOCUMENT
     global.document = {}
-    fauxNode = {
-      classList: {
-        add: () => {},
-        remove: () => {}
-      }
-    }
-    global.fetch = () => { Promise }
-    chai.spy.on(fauxHotel, 'getData', () => {
-      return {
-        then: () => {
-          const container = document.getElementById("card-container");
-          fauxHotel.rooms.forEach((room) => {
-            container.insertAdjacentHTML("beforeend", page.roomCardTemplate(room));
-          })
-        } 
-      }
-    })
-    Object.prototype.insertAdjacentHTML = () => {};
     chai.spy.on(document, ['querySelectorAll'], () => {
       return inputNodes;
     })
@@ -44,17 +27,56 @@ describe("Page", () => {
     chai.spy.on(document, ['getElementById'], () => {
       return {innerHtml: 'whatever'}
     })
+    //MOCK FETCH
+    mockResponse = {
+      then: (method) => {
+        method(mockResponse);
+        return mockResponse;
+      },
+      catch: () => {
+        return mockResponse;
+      },
+    }
+    // chai.spy.on(global, 'fetch', () => mockResponse)
+    // global.fetch = () => { 
+    //   return mockResponse 
+    // }
+    //MOCK
+    fauxNode = {
+      classList: {
+        add: () => {},
+        remove: () => {}
+      }
+    }
     chai.spy.on(fauxNode.classList, ['add', 'remove'], () => {})
-    page = new Page()
-    fauxPage = new Page()
-    chai.spy.on(page, ['roomCardTemplate'], () => {
-      return `html block`
+    //MOCK HOTEL
+    fauxHotel = {rooms}
+    chai.spy.on(fauxHotel, 'getData', () => {
+      return {
+        then: () => {
+          const container = document.getElementById("card-container");
+          fauxHotel.rooms.forEach((room) => {
+            container.insertAdjacentHTML(
+              "beforeend", page.roomCardTemplate(room)
+            )
+          })
+        } 
+      }
     })
+    //MOCK PAGE
+    fauxPage = new Page()
     chai.spy.on(fauxPage, [
       'showElements', 
       'hideElements', 
-      'populateRoomCards'
     ], () => {})
+    chai.spy.on(fauxPage, 'populateRoomCards', () => mockResponse)
+    //PAGE
+    page = new Page()
+    chai.spy.on(page, ['roomCardTemplate'], () => {
+      return `html block`
+    })
+    //AdjacentHTML as a function
+    Object.prototype.insertAdjacentHTML = () => {};
   })
 
   describe('log-in functions', () => {
@@ -110,31 +132,50 @@ describe("Page", () => {
 
     it('should be able to hide any amount of elements', () => {
       page.hideElements('1', '2', '3')
-      expect(document.querySelector).to.have.been.called(3)
+      expect(document.querySelectorAll).to.have.been.called(3)
       page.hideElements('1', '2', '3', '4')
-      expect(document.querySelector).to.have.been.called(7)
-      expect(fauxNode.classList.add).to.have.been.called(7)
-      expect(fauxNode.classList.add).to.have.been.with('hidden')
+      expect(document.querySelectorAll).to.have.been.called(7)
+      // expect(fauxNode.classList.add).to.have.been.called(7)
+      // expect(fauxNode.classList.add).to.have.been.with('hidden')
     })
 
     it('should be able to show any amount of elements', () => {
       page.showElements('1', '2', '3')
-      expect(document.querySelector).to.have.been.called(3)
+      expect(document.querySelectorAll).to.have.been.called(3)
       page.showElements('1', '2', '3', '4')
-      expect(document.querySelector).to.have.been.called(7)
-      expect(fauxNode.classList.remove).to.have.been.called(7)
-      expect(fauxNode.classList.remove).to.have.been.with('hidden')
+      expect(document.querySelectorAll).to.have.been.called(7)
+      // expect(fauxNode.classList.remove).to.have.been.called(7)
+      // expect(fauxNode.classList.remove).to.have.been.with('hidden')
     })
 
     it('should hide the home page when going to rooms page', () => {
       fauxPage.goToRoomsPage(rooms)
-      expect(fauxPage.hideElements).to.have.been.called(1)
+      expect(fauxPage.hideElements).to.have.been.called(2)
       expect(fauxPage.hideElements).to.have.been.called.with('.home-page')
     })
 
     it('should show the rooms page when going to it', () => {
       fauxPage.goToRoomsPage(rooms)
+      expect(fauxPage.showElements).to.have.been.called(2)
+    })
+
+    it('should show the signed-out user bar' + 
+    'if current user is undefined', () => {
+      fauxPage.findLoggedInElements()
       expect(fauxPage.showElements).to.have.been.called(1)
+      expect(fauxPage.showElements).to.have.been.called.with(
+        '#user-bar-signed-out'
+      )
+    })
+    
+    it('should show the signed-in user bar and booking buttons' + 
+    ' if the user is defined', () => {
+      fauxPage.hotel.currentUser = "Danny Torrence"     
+      fauxPage.findLoggedInElements()
+      expect(fauxPage.showElements).to.have.been.called(1)
+      expect(fauxPage.showElements).to.have.been.called.with(
+        '#user-bar-signed-in', '.booking-button'
+      )
     })
   })
 })

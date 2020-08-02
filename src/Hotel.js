@@ -169,6 +169,7 @@ class Hotel extends DataHandler {
   checkUserId(username) {
     const id = parseInt(username.substring(8))
     const currentUser = this.findUser(id)
+    console.log(id, console.log(currentUser))
     if (currentUser !== 'No user was found, please adjust your search') {
       return new Customer(currentUser, this.bookings, this.rooms)
     } else {

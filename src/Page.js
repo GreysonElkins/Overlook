@@ -1,4 +1,6 @@
 import Hotel from "./Hotel"
+import Manager from "./Manager"
+import { users } from "../test/faux-data"
 
 
 class Page {
@@ -23,27 +25,31 @@ class Page {
   hideElements() {
     const args = Array.from(arguments)
     args.forEach(argument => {
-      const element = document.querySelector(argument)
-      element.classList.add('hidden')
+      const element = document.querySelectorAll(argument)
+      element.forEach(thing => thing.classList.add('hidden'))
+      // element.classList.add('hidden')
     })
   }
 
   showElements() {
     const args = Array.from(arguments)
     args.forEach(argument => {
-      const element = document.querySelector(argument)
-      element.classList.remove('hidden')
+      const element = document.querySelectorAll(argument)
+      element.forEach((thing) => thing.classList.remove("hidden"));  
+      // element.classList.remove('hidden')
     })
   }
 
   goToRoomsPage() {
-    this.populateRoomCards()
-    this.hideElements('.home-page')
-    this.showElements('.rooms-page')
+    this.populateRoomCards() 
+      .then(() => this.findLoggedInElements())
+    this.hideElements('.home-page', '.sign-in-pop-up')
+    this.showElements('.rooms-page', '.sign-in-or-out')
+    // this.findLoggedInElements()
   }
   
   populateRoomCards(hotel = this.hotel) {
-    hotel.getData('rooms') 
+    return hotel.getData('rooms') 
       .then(() => {
         const container = document.getElementById('card-container')
         this.hotel.rooms.forEach(room => {
@@ -59,7 +65,7 @@ class Page {
           <span class="room-value" id="roomType">${room.roomType}</span>
         </div >
         <div class="card-body">
-          <img class="room-image" src="images/overlook.jpg" 
+          <img class="room-image" src="images/${this.findRoomImageSource(room)}.jpg" 
           alt="default-room-icon" />
           <!-- a function for determining the image src -->
           <div class="card-info">
@@ -83,12 +89,38 @@ class Page {
               $${room.costPerNight}/night
             </span>
             <br />
-            <button tabindex="0" id="${room.number}">
+            <button class="booking-button hidden" tabindex="0" id="${room.number}">
               Book it
             </button>
           </div>
         </div>
       </section >`
+  }
+
+  findLoggedInElements() {
+    if (this.hotel.currentUser === undefined) {
+      this.showElements('#user-bar-signed-out')
+      this.hideElements('#user-bar-signed-in')
+    } else {
+      this.showElements('#user-bar-signed-in', '.booking-button')
+      this.hideElements('#user-bar-signed-out')
+      this.placeUserName()
+      // let bookingButtons = document.querySelectorAll('.booking-button')
+      // bookingButtons.forEach(button => this.showElements(button))
+    }
+  }
+
+  placeUserName() {
+    let username = document.getElementById('user-name')
+    if (this.hotel.currentUser.name) {
+      username.innerText = this.hotel.currentUser.name
+    } else {
+      username.innerText = 'Manager'
+    }
+  }
+
+  findRoomImageSource(room) {
+    return room.roomType.split(' ').join('-');
   }
 }
 
