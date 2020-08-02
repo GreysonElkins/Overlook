@@ -2,7 +2,9 @@
 
 body {
   background-image: url('../images/background.png');
+  background-attachment: fixed;
   padding: 0em;
+  overflow: scroll;
 }
 
 h1 {
@@ -21,6 +23,10 @@ header {
   justify-content: space-between;
   align-items: flex-start;
   padding: 1em 1em 0em 1em;
+}
+
+.page-container {
+  display: flex;
 }
 
 nav {
@@ -54,7 +60,7 @@ button {
   flex-direction:column;
   align-items: center;
   // width: 100%;
-
+  margin: 0 auto;
   nav {
     display: flex;
     justify-content: space-around;
@@ -89,6 +95,20 @@ button {
     border-radius: 10%;
     font-size: 1em;
   }
+}
+
+.sign-in-pop-up {
+  @extend .main-log-in;
+  box-shadow: 12px 12px 2px 1px rgba(0, 0, 0, .5);
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  top: 40%;
+  left: 40%;
+  height: 6em;
+  width: 10em;
+  z-index: 3;
 }
 
 .hidden {

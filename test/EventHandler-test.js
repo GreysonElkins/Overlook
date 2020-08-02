@@ -4,25 +4,30 @@ const spies = require("chai-spies")
 chai.use(spies)
 
 import EventHandler from "../src/EventHandler"
-import Hotel from '../src/Hotel'
-import {inputNodes} from './faux-data'
 
 describe("Event Handler", () => {
   let handler;
   let fauxPage;
   let event;
+  let roomEvent
 
   beforeEach(() => {
     global.document = { }
     fauxPage = {hotel: {}}
     event = {target: {id: 'log-in'}}
+    roomEvent = {target: {id: 'rooms-button'}}
     Object.prototype.addEventListener = () => {}
     chai.spy.on(event, 'preventDefault', () => {})
     chai.spy.on(fauxPage, ["goToRoomsPage", "getLogInInfoFromForm"], () => {
       return {username: 'yoPapa', password: 'yoMama'}
     })
     chai.spy.on(fauxPage.hotel, ['authenticateUser'], () => {
-      return true
+      fauxPage.hotel.currentUser = "YoPapa"
+      return {then: () => {
+        if (fauxPage.hotel.currentUser !== undefined) {
+          fauxPage.goToRoomsPage();
+        }
+      }}
     })
     chai.spy.on(document, ["querySelectorAll"], () => {
       return ['node', 'node', 'node']
@@ -41,8 +46,6 @@ describe("Event Handler", () => {
       expect(document.querySelectorAll).to.have.been.called(1)
     })
   
-  
-  
     it("should be able to find all buttons", () => {
       handler.findButtons()
       expect(document.querySelectorAll).to.have.been.called(2)
@@ -58,6 +61,7 @@ describe("Event Handler", () => {
     })
   })
   describe("login", () => {
+
     it('should receive log-in info from form', () => {
       handler.buttonHandler(event, fauxPage)
       expect(fauxPage.getLogInInfoFromForm).to.have.been.called(1)
@@ -73,8 +77,16 @@ describe("Event Handler", () => {
       expect(fauxPage.hotel.authenticateUser).to.have.been.called(1)
     })
   
+  })
+  describe("directing page changes", () => {  
+    
     it('should go to rooms page if the user is authenticated', () => {
       handler.buttonHandler(event, fauxPage)
+      expect(fauxPage.goToRoomsPage).to.have.been.called(1)
+    })
+
+    it('should go to the rooms page when rooms is clicked', () => {
+      handler.buttonHandler(roomEvent, fauxPage)
       expect(fauxPage.goToRoomsPage).to.have.been.called(1)
     })
   })

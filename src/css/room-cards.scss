@@ -6,11 +6,14 @@
   justify-content: space-around;
   padding: 0em 2em;
   width: 80%;
+  margin: 0 auto;
+  margin-left: 15em;
 }
 
 .card {
   background-color: $linen;
   border-radius: 2%;
+  font-size: .8em;
   height: 15em;
   margin: 0em 0em 2em 2em;
   overflow: hidden;

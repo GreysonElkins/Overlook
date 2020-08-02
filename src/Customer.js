@@ -16,7 +16,7 @@ class Customer {
       if (bookedRoomNumbers.includes(room.number)) {
         sum += room.costPerNight
       }
-      return sum
+      return parseFloat(sum.toFixed(2))
     }, 0)
   }
 }

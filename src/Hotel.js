@@ -1,13 +1,14 @@
 import DataHandler from './DataHandler'
 import Customer from './Customer'
 import Manager from './Manager';
-
+import moment from 'moment'
 class Hotel extends DataHandler {
   constructor() {
     super();
     this.rooms;
     this.bookings;
     this.users;
+    this.today = moment().format('YYYY/MM/DD')
   }
 
   storeData(input) {
@@ -64,7 +65,7 @@ class Hotel extends DataHandler {
     }
   }
 
-  findAvailableRooms(date) {
+  findAvailableRooms(date = this.today) {
     if (this.isDate(date) === false) return 'The date is an unexpected format'
     let bookedRooms = this.findBookedRoomNumbers(date)
     if (!Array.isArray(bookedRooms)) return bookedRooms
@@ -108,7 +109,7 @@ class Hotel extends DataHandler {
     }
   }
 
-  calculateDailyRevenue(date) {
+  calculateDailyRevenue(date = this.today) {
     let bookedRooms = this.findBookedRoomNumbers(date);
     if (!Array.isArray(bookedRooms)) return bookedRooms
     return this.rooms.reduce((revenue, room) => {
@@ -153,27 +154,26 @@ class Hotel extends DataHandler {
     let password = "overlook2020"
     if (credentials.username === "manager" 
     && credentials.password === password) {
-      let currentUser = new Manager()
-      // this.getAllData(this, 'users', 'bookings', 'rooms')
-      return currentUser
+      this.currentUser = new Manager()
+      return this.getData('users')
     } else if (credentials.username.includes('customer') 
     && credentials.password === password) {
       return this.getData('users')
         .then(() => {
-          return this.checkUserId(credentials.username)
+          if (this.checkUserId(credentials.username) !== false) {
+            return this.currentUser = this.checkUserId(credentials.username)
+          }
         })
-    } else {
-      return false
     }
   }
 
   checkUserId(username) {
     const id = parseInt(username.substring(8))
     const currentUser = this.findUser(id)
-    if (typeof currentUser !== 'object') {
-      return false
-    } else {
+    if (currentUser !== 'No user was found, please adjust your search') {
       return new Customer(currentUser, this.bookings, this.rooms)
+    } else {
+      return false
     }
   }
 

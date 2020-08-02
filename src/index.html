@@ -7,41 +7,71 @@
   <header>
     <h1 tabindex="0">The Overlook Hotel</h1>
     <nav>
-      <span class="sign-in-or-out hidden">
+      <span class="sign-in-or-out">
         <button id="about-button" tabindex="0">About</button>
         <img class="icon" src="/images/user-icon.png" alt="user icon" tabindex="0"/>
-        <span id="user-bar-signed-out hidden" tabindex="0">sign in</span>
-        <span id="user-bar-signed-in">
+        <button class="" id="user-bar-signed-out" tabindex="0">sign in</button>
+        <span class="hidden" id="user-bar-signed-in">
           <span class="" id="user-name" tabindex="0" tabindex="0">Jack Torrence</span> |
-          <span id="sign-out" tabindex="0"> sign-out</span>
+          <button id="sign-out" tabindex="0"> sign-out</button>
         </span>
       </span>
     </nav>
   </header>
-  <section class="home-page" id="home-page">
-    <nav>
-      <button id="about-button" tabindex="0">About</button>
-      <button id="rooms-button" tabindex="0">Rooms</button>
-    </nav>
-    <img src="images/overlook.jpg" class="overlook-image"
-    alt="The Overlook, a hotel just below the peak of a snowcapped
-     mountain during summer, soft clouds billow over the peak under a blue sky"/>
-    <form class="main-log-in" id="main-log-in">
+  <section class="page-container">
+    <section class="home-page" id="home-page">
+      <nav>
+        <button id="about-button" tabindex="0">About</button>
+        <button id="rooms-button" tabindex="0">Rooms</button>
+      </nav>
+      <img src="images/overlook.jpg" class="overlook-image"
+      alt="The Overlook, a hotel just below the peak of a snowcapped
+      mountain during summer, soft clouds billow over the peak under a blue sky"/>
+    </section>
+    <section class="user-pane hidden" id="user-pane">
+      <section class="search-window">
+        <h3>Filter Rooms:</h3>
+        <div id="filter-tags">
+        </div>
+        Number of Beds: <input id=/> <br/>
+        Type of Beds:<div id="beds">
+
+        </div><br />
+        Bidet? <input type="radio">
+        <hr>
+        <h3>Booking:</h3>
+        <input type="date"/>
+        <section class="manager-dash hidden">
+          <span class="user-search" tabindex="0">
+            <input />
+            <button tabindex="0" id="user-search">search</button>
+            <span id="foundUser"></span>
+          </span>
+          <hr>
+          <section class="manager-info" tabindex="0">
+          </section>
+        </section>
+        <section class="guest-dash hidden" tabindex="0">
+        </section>
+      </section>
+    </section>
+    <section class="rooms-page hidden" id="rooms-page">
+      <section class="card-container" id="card-container">
+      </section>
+    </section>
+  </section>
+  <section class="sign-in-pop-up hidden" id="sign-in-pop-up"> 
+    <form>
       <span>
         <label for="username">username: </label>
-        <input id="username" tabindex="0"/>
+        <input id="username" tabindex="0" />
       </span>
       <span>
         <label for="password">password: </label>
-        <input id="password" type="password" tabindex="0"/>
+        <input id="password" type="password" tabindex="0" />
       </span>
       <button tabindex="0" id="log-in">Login</button>
     </form>
-  </section>
-  <section class="rooms-page hidden" id="rooms-page">
-    <section class="user-dashboard" id="user-dashboard"></section>
-    <section class="card-container" id="card-container">
-    </section>
   </section>
 </body>
 </html>

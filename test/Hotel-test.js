@@ -204,35 +204,32 @@ describe('Hotel', () => {
   })
 
   describe('user authentification', () => {
+    let hotel;
 
-    let mockPromise
-    let responseObject 
-    
     beforeEach(() => {
-      
-      responseObject = {
-        then: () => {
-          return responseObject
-        },
-        catch: () => {
-          return responseObject
-        }
-      }
-
+      hotel = new Hotel()
       global.document = {}
       global.fetch = () => {
-        return responseObject
+        return Promise
       }
-      mockPromise = {}
+      Promise = {
+        then: () => {
+          return Promise
+        },
+        catch: () => {
+          return Promise
+        }
+      }
       overlook.storeData(users);
       chai.spy.on(global, 'fetch') 
-      // chai.spy.on(fetch, ['then'], () => {})
+      chai.spy.on(global.fetch, 'then')
+      chai.spy.on(hotel, ['checkUserId'], () => {new Customer(users[0])})
     })
     
     it('should allow a manager to log in with the right password', () => {
       const managerCredentials = {username: 'manager', password: 'overlook2020'}
-      let result = overlook.authenticateUser(managerCredentials) 
-      expect(result).to.be.an.instanceOf(Manager)
+      overlook.authenticateUser(managerCredentials) 
+      expect(overlook.currentUser).to.be.an.instanceOf(Manager)
     })
 
     it('should not allow a manager to log in with the wrong password', () => {
@@ -241,22 +238,22 @@ describe('Hotel', () => {
         password: 'overlook2021'
       } 
       let result = overlook.authenticateUser(managerCredentials)
-      expect(result).to.equal(false)
+      expect(result).to.equal(undefined)
     })
 
     it('should be able to find customer\'s id', () => {
       let user = overlook.checkUserId('customer1')
-      expect(user).to.deep.equal(users[0])
+      expect(user).to.deep.equal(new Customer(users[0]))
     })
 
     it('should allow a client to log in with the correct password' +
-    ' and pull up their "account"', () => {
+    ' and fetch user data', () => {
       const clientCredentials = {
         username: 'customer1',
         password: 'overlook2020'
       }
-      let result = overlook.authenticateUser(clientCredentials)
-      expect(result).to.deep.equal(users[0])
+      overlook.authenticateUser(clientCredentials)
+      expect(fetch).to.have.been.called(1)
     })
 
     it('should only allow users already in the system to log in', () => {
@@ -264,30 +261,19 @@ describe('Hotel', () => {
         username: 'customer11',
         password: 'overlook2020'
       }
-      let result = overlook.authenticateUser(clientCredentials)
-      expect(result).to.equal(false)
+      overlook.authenticateUser(clientCredentials)
+      expect(overlook.currentUser).to.equal(undefined)
     })
 
-    it('should store the current user as a customer upon authenticating ' + 
-    'a customer', () => {
-      const clientCredentials = {
-        username: 'customer1',
-        password: 'overlook2020'
-      }
-      overlook.authenticateUser(clientCredentials)
-      expect(overlook.currentUser).to.be.an.instanceOf(Customer)
-    })
-
-    it('should create the customer based on data from the hotel', () => {
-      const clientCredentials = {
-        username: 'customer1',
-        password: 'overlook2020'
-      }
-      overlook.storeData(rooms)
-      overlook.storeData(bookings)
-      overlook.authenticateUser(clientCredentials)
-      expect(overlook.currentUser.accountBalance).to.equal(491.14)
-    })
+    // it('should store the current user as a customer upon authenticating ' + 
+    // 'a customer', () => {
+    //   const clientCredentials = {
+    //     username: 'customer1',
+    //     password: 'overlook2020'
+    //   }
+    //   overlook.authenticateUser(clientCredentials)
+    //   expect(overlook.currentUser).to.be.an.instanceOf(Customer)
+    // })
 
     it('should create a manager as the currentUser' + 
     'when a manager logs in', () => {
@@ -297,6 +283,7 @@ describe('Hotel', () => {
       }
       overlook.authenticateUser(managerCredentials)
       expect(overlook.currentUser).to.be.an.instanceOf(Manager)
+
     })
   })
 })

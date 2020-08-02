@@ -19,12 +19,21 @@ class EventHandler {
     if (event.target.id === 'log-in') {
       event.preventDefault()
       const userCredentials = page.getLogInInfoFromForm()
-      let currentUser = page.hotel.authenticateUser(userCredentials)
-      if (typeof currentUser === 'object') {
-        page.goToRoomsPage()
-      }
+      page.hotel.authenticateUser(userCredentials)
+        .then(() => {
+          if (page.hotel.currentUser !== undefined) {
+            page.goToRoomsPage()
+          }
+        })
       // isAuthorized ? load next page: message on DOM, clear inputs
       // test line 23
+    } else if (event.target.id === 'rooms-button') {
+      page.goToRoomsPage();
+    } else if (event.target.id === 'user-bar-signed-out') {
+      page.showElements('.sign-in-pop-up')
+    } else if (event.target.id === 'sign-out') {
+      page.hotel.currentUser = undefined
+      location.reload()
     }
   }
 }

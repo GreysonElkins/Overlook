@@ -1,7 +1,8 @@
 class DataHandler {
 
   getData(src, hotel) {
-    return fetch(`https://fe-apps.herokuapp.com/api/v1/overlook/1904/${src}/${src}`)
+    const apiHead = `https://fe-apps.herokuapp.com/api/v1/overlook/1904`
+    return fetch(`${apiHead}/${src}/${src}`)
       .then(response => response.json())
       .then(data => hotel.storeData(data[src]))
       .catch(err => console.log(err))
@@ -10,7 +11,7 @@ class DataHandler {
   getAllData (hotel) {
     let args = Array.from(arguments);
     args.shift();
-    args.forEach(argument => this.getData(hotel, argument))
+    return args.forEach(argument => this.getData(argument, hotel))
   }
 }
 
