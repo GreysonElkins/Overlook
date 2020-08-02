@@ -124,10 +124,10 @@ class Page {
   }
 
   populateDashboard(dash) {
-    this.populateUserSection(dash)
+    this.populateUserDashboardData(dash)
   }
 
-  populateUserSection(dash) {
+  populateUserDashboardData(dash) {
     const dashboard = document.querySelector(dash)
     const promise1 = this.hotel.getData('rooms')
     const promise2 = this.hotel.getData('bookings')
@@ -141,39 +141,41 @@ class Page {
   }
 
   getDashboardHtml() {
-    const date = moment(this.hotel.today).format('MMM DD')
+    const date = new Date(this.hotel.today) 
+    moment(date).format('MMM DD')
 
     if (this.hotel.currentUser instanceof Manager) {
       return `
-      <h3>Manager Dashboard</h3>
+      <h3tabindex="0">Manager Dashboard</h3>
       Rooms available for <date>${date}</date>: 
-      <span id="roomsAvailable">
+      <span id="roomsAvailable" tabindex="0">
         ${this.hotel.findAvailableRooms().length}
       </span><br />
       Revenue on <date>${date}</date>: 
-      <span id="revenue">$${this.hotel.calculateDailyRevenue()}</span><br />
+      <span id="revenue" tabindex="0">
+        $${this.hotel.calculateDailyRevenue()}
+      </span><br />
       Percentage of rooms occupied on <date>${date}</date>:
-      <span id="percentageBooked">
-      ${(this.hotel.rooms.length - this.hotel.findAvailableRooms().length)
-        / this.hotel.rooms.length 
-        * 100}%
+      <span id="percentageBooked" tabindex="0">
+      ${((this.hotel.rooms.length - this.hotel.findAvailableRooms().length) /
+        this.hotel.rooms.length) *
+        100}%
       </span>`;
     } else if (this.hotel.currentUser instanceof Customer) {
       const user = this.hotel.currentUser
       user.bookings = user.findBookings(this.hotel.bookings)
       user.accountBalance = user.findAccountBalance(this.hotel.rooms)
-      console.log(user)
       return `
       <hr>
-      <h3>Guest Dashboard</h3>
-      Account Balance: <span id="accountBalance">
+      <h3 tabindex="0">Guest Dashboard</h3>
+      Account Balance: <span id="accountBalance" tabindex="0">
         $${user.accountBalance}
       </span><br >
-      Up-coming Visits: <ul id="upcoming-visits">
-        ${this.populateUserBookingLists('upcoming')}
+      Up-coming Visits: <ul id="upcoming-visits" tabindex="0">
+        ${this.populateUserBookingLists("upcoming")}
       </ul><br />
-      Previous Visits: <ul id="previous-visits">
-        ${this.populateUserBookingLists('previous')}
+      Previous Visits: <ul id="previous-visits" tabindex="0">
+        ${this.populateUserBookingLists("previous")}
       </ul>
       `;
     }
@@ -181,10 +183,11 @@ class Page {
   
   populateUserBookingLists(list) {
     return this.hotel.currentUser.bookings.reduce((listItems, booking) => {
-      let item = `<li>${moment(booking.date).format('DD MMM YYYY')}</li>`;
-      if (list === 'upcoming' && moment(booking.date) >= moment()) {
+      let date = new Date(booking.date)
+      let item = `<li tabindex="0">${moment(date).format("DD MMM YYYY")}</li>`;
+      if (list === 'upcoming' && moment(date) >= moment()) {
         listItems += item
-      } else if (list === 'previous' && moment(booking.date) < moment()) {
+      } else if (list === 'previous' && moment(date) < moment()) {
         listItems += item
       }
       return listItems
