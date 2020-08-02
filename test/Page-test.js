@@ -5,7 +5,7 @@ chai.use(spies);
 
 import Page from '../src/Page'
 import Hotel from '../src/Hotel'
-import {users, rooms, inputNodes} from './faux-data'
+import {users, rooms, bookings, inputNodes} from './faux-data'
 import Manager from '../src/Manager';
 import Customer from '../src/Customer';
 
@@ -38,11 +38,8 @@ describe("Page", () => {
       catch: () => {
         return mockResponse;
       },
+      all: () => mockResponse,
     }
-    // chai.spy.on(global, 'fetch', () => mockResponse)
-    // global.fetch = () => { 
-    //   return mockResponse 
-    // }
     //MOCK
     fauxNode = {
       classList: {
@@ -132,6 +129,14 @@ describe("Page", () => {
 
   describe('changing pages', () => {
 
+    beforeEach(() => {
+      Promise = { all: () => mockResponse }
+      chai.spy.on(fauxPage.hotel, 'getData', () => mockResponse)
+      fauxPage.hotel.storeData(users);
+      fauxPage.hotel.storeData(bookings);
+      fauxPage.hotel.storeData(rooms);
+    })
+
     it('should be able to hide any amount of elements', () => {
       page.hideElements('1', '2', '3')
       expect(document.querySelectorAll).to.have.been.called(3)
@@ -215,5 +220,41 @@ describe("Page", () => {
         ".guest-dash"
       );
     })
+  })
+
+  describe('user dashboards', () => {
+
+    beforeEach(() => {
+      chai.spy.on(fauxPage.hotel, "getData", () => mockResponse)
+      chai.spy.on(fauxPage, 'getDashboardHtml', () => {})
+      // chai.spy.on(page.hotel, ['findAvailableRooms', 'calculateDailyRevenue'])
+      // chai.spy.on(page.hotel.currentUser, ['findBookings', 'findAccountBalance'])
+      // chai.spy.on(page, 'populateUserBookingLists')
+      // chai.spy.on(Object.prototype, 'innerHTML', () => {})
+    })
+
+    it('should select a specific dashboard node', () => {
+      fauxPage.populateUserDashboardData('.manager-info')
+      expect(document.querySelector).to.have.been.called(1)
+      expect(document.querySelector).to.have.been.called.with('.manager-info')
+    })
+
+    it.skip('should get dashboard html and place it', () => {
+      fauxPage.populateUserDashboardData(".manager-info");
+      expect(fauxPage.getDashboardHtml).to.have.been.called(1)
+      // expect(Object.prototype.innerHtml).to.have.been.called(1)
+    })
+
+    it.skip('should run calculations based on whether a user is a Manager or Customer', () => {
+      page.hotel.currentUser = new Manager() 
+      console.log(page.hotel.currentUser)
+      page.getDashboardHtml()
+      expect(page.hotel.findAvailableRooms).to.have.been.run(2)
+      expect(page.hotel.calculateDailyRevenue).to.have.been.run(1)
+      expect(page.hotel.currentUser.findBookings).to.have.been.run(0)
+      expect(page.hotel.currentUser.findAccountBalance).to.have.been.run(0)
+      expect(page.populateUserBookingLists).to.have.been.run(0)
+    })
+
   })
 })
