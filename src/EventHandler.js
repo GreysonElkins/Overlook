@@ -18,8 +18,6 @@ class EventHandler {
 
   buttonHandler(event, page = new Page()) {
 
-
-
     if (event.target.id === 'log-in') {
       event.preventDefault()
       const userCredentials = page.getLogInInfoFromForm()

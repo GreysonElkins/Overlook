@@ -3,10 +3,11 @@ import Manager from "./Manager"
 import Customer from "./Customer"
 import moment from "moment"
 
-class Page {
-  constructor() {
-    this.hotel = new Hotel()
-  }
+const page = {
+ 
+  hotel: new Hotel(),
+  currentUser: undefined,
+
   getLogInInfoFromForm() {
     const inputs = document.querySelectorAll('input')
     const userCredentials = {}
@@ -18,7 +19,7 @@ class Page {
       }
     }
     return userCredentials
-  }
+  },
 
   hideElements() {
     const args = Array.from(arguments)
@@ -26,7 +27,7 @@ class Page {
       const element = document.querySelectorAll(argument)
       element.forEach(thing => thing.classList.add('hidden'))
     })
-  }
+  },
 
   showElements() {
     const args = Array.from(arguments)
@@ -34,17 +35,15 @@ class Page {
       const element = document.querySelectorAll(argument)
       element.forEach((thing) => thing.classList.remove("hidden"));  
     })
-  }
+  },
 
-  goToRoomsPage() {
-    this.populateRoomCards() 
+  goToRoomsPage(rooms) {
+    this.populateRoomCards(rooms) 
       .then(() => this.findLoggedInElements())
     this.hideElements('.home-page', '.sign-in-pop-up')
     this.showElements('.rooms-page', '.sign-in-or-out')
-  }
+  },
 
-
-  
   populateRoomCards(rooms) {
     let promise1 = this.hotel.getData('bookings')
     let promise2 = this.hotel.getData('rooms')
@@ -66,7 +65,7 @@ class Page {
     //   .then(() => {
     //     })
     //   })
-  }
+  },
   
   roomCardTemplate(room) {
     return `
@@ -106,10 +105,10 @@ class Page {
           </div>
         </div>
       </section >`
-  }
+  },
 
   findLoggedInElements() {
-    if (this.hotel.currentUser === undefined) {
+    if (this.currentUser === undefined) {
       this.showElements('#user-bar-signed-out')
       this.hideElements('#user-bar-signed-in')
     } else {
@@ -117,26 +116,26 @@ class Page {
       this.hideElements('#user-bar-signed-out')
       this.placeUserName()
     }
-    if (this.hotel.currentUser instanceof Manager) {
+    if (this.currentUser instanceof Manager) {
       this.showElements('.manager-dash', '.user-search')
       this.hideElements('.guest-dash')
       this.populateDashboard('.manager-info')
-    } else if (this.hotel.currentUser instanceof Customer) {
+    } else if (this.currentUser instanceof Customer) {
       this.hideElements('.manager-dash', '.user-search')
       this.showElements('.guest-dash')
       this.populateDashboard('.guest-dash')
     }
 
-  }
+  },
 
   placeUserName() {
     let username = document.getElementById('user-name')
-    if (this.hotel.currentUser.name) {
-      username.innerText = this.hotel.currentUser.name
+    if (this.currentUser.name) {
+      username.innerText = this.currentUser.name
     } else {
       username.innerText = 'Manager'
     }
-  }
+  },
 
   populateDashboard(dash) {
     const dashboard = document.querySelector(dash)
@@ -163,13 +162,13 @@ class Page {
         userHtml = this.getUserDashboardData()
         dashboard.innerHTML = userHtml
       })
-  }
+  },
 
   getUserDashboardData() {
     const date = new Date(this.hotel.today) 
     const printDate = moment(date).format('MMM DD')
 
-    if (this.hotel.currentUser instanceof Manager) {
+    if (this.currentUser instanceof Manager) {
       return `
       <h3tabindex="0">Manager Dashboard</h3><br />
       Rooms available for <date>$${printDate}</date>: 
@@ -186,8 +185,8 @@ class Page {
         this.hotel.rooms.length) *
         100}%
       </span>`;
-    } else if (this.hotel.currentUser instanceof Customer) {
-      const user = this.hotel.currentUser
+    } else if (this.currentUser instanceof Customer) {
+      const user = this.currentUser
       user.bookings = user.findBookings(this.hotel.bookings)
       user.accountBalance = user.findAccountBalance(this.hotel.rooms)
       return `
@@ -204,10 +203,10 @@ class Page {
       </ul>
       `;
     }
-  }
+  },
   
   populateUserBookingLists(list) {
-    return this.hotel.currentUser.bookings.reduce((listItems, booking) => {
+    return this.currentUser.bookings.reduce((listItems, booking) => {
       let date = new Date(booking.date)
       let item = `<li tabindex="0">${moment(date).format("DD MMM YYYY")}</li>`;
       if (list === 'upcoming' && moment(date) >= moment()) {
@@ -217,11 +216,11 @@ class Page {
       }
       return listItems
     }, '')
-  }
+  },
 
   findRoomImageSource(room) {
     return room.roomType.split(' ').join('-');
-  }
+  },
 
   displayPriceFilterSliderValue() {
     const slider = document.getElementById('max-price');
@@ -231,7 +230,7 @@ class Page {
     slider.oninput = function() {
       display.innerText = this.value; 
     }
-  }
+  },
 
   populateRoomTags(key) {
     let roomTags = []
@@ -243,14 +242,14 @@ class Page {
       }
       return roomTagsHtml
     }, '')
-  }
+  },
 
   addTagListeners() {
     const tags = document.querySelectorAll('.room-tag')
     for (let i = 0; i < tags.length; i ++) {
       tags[i].addEventListener('click', this.toggleTagState)
     }
-  }
+  },
  
   toggleTagState(event) {
     let tag = event.target
@@ -261,7 +260,7 @@ class Page {
       tag.classList.add('selected')
       tag.style.backgroundColor = "#283D3B"
     }
-  }
+  },
 
   checkTags() {
     let promise1 = this.hotel.getData('bookings')
@@ -282,9 +281,9 @@ class Page {
           numberOfBeds, 
           wantsBidet
         ) 
-        this.populateRoomCards(filteredRooms)
+        this.goToRoomsPage(filteredRooms)
       })
-  } 
+  }, 
 
   getSelectedTags(dataType) {
     const roomTags = document.querySelectorAll(dataType)
@@ -296,7 +295,7 @@ class Page {
       }
     })
     return selectedTags
-  } 
+  },
 
   getDateInQuestion() {
     const input = document.getElementById('date-in-question').value
@@ -307,21 +306,21 @@ class Page {
       const dateInQuestion = moment(unformattedDate).format('YYYY/MM/DD')
       return dateInQuestion
     }
-  }
+  },
 
   findCustomerBookingData(event) {
     const room = parseInt(event.target.id)
     const date = this.getDateInQuestion()
-    let booking = this.hotel.currentUser.createBooking(room, date)
+    let booking = this.currentUser.createBooking(room, date)
     console.log(booking)
     this.hotel.makeBooking(booking)
-  }
+  },
 
   findManagerBookingData(room, id) {
     const date = this.getDateInQuestion()
-    let booking = this.hotel.currentUser.createBooking(room, date, id)
+    let booking = this.currentUser.createBooking(room, date, id)
     this.hotel.makeBooking(booking)
-  }
+  },
 
   setUserToBook(event) {
     let room = parseInt(event.target.id.substring(11))
@@ -339,8 +338,8 @@ class Page {
         }
       })
 
-  }
+  },
 
 }
 
-export default Page
+export default page
