@@ -59,6 +59,7 @@ class Page {
         rooms.forEach(room => {
           container.insertAdjacentHTML('beforeend', this.roomCardTemplate(room))
         })
+
       })
     
     // return this.hotel.getData('rooms') 
@@ -307,6 +308,12 @@ class Page {
       const dateInQuestion = moment(unformattedDate).format('YYYY/MM/DD')
       return dateInQuestion
     }
+  }
+
+  findBookingData(event) {
+    const date = this.getDateInQuestion()
+    let booking = this.hotel.currentUser.createBooking(event, date)
+    this.hotel.makeBooking(booking)
   }
 
 }

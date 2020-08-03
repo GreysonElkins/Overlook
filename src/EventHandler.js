@@ -16,6 +16,7 @@ class EventHandler {
   }
 
   buttonHandler(event, page = new Page()) {
+
     if (event.target.id === 'log-in') {
       event.preventDefault()
       const userCredentials = page.getLogInInfoFromForm()
@@ -23,6 +24,7 @@ class EventHandler {
         .then(() => {
           if (page.hotel.currentUser !== undefined) {
             page.goToRoomsPage()
+            setTimeout(setBookingButtons, 1000)
           }
         })
     } else if (event.target.id === 'rooms-button') {
@@ -34,6 +36,17 @@ class EventHandler {
       location.reload()
     } else if (event.target.id === 'filter-rooms') {
       page.checkTags()
+    }
+    
+    const pressBookingButton = () => {
+      page.findBookingData(event)
+    }
+  
+    const setBookingButtons = () => {
+      const bookingButtons = document.querySelectorAll('.booking-button')
+      for (let i = 0; i < bookingButtons.length; i++) {
+        bookingButtons[i].addEventListener('click', pressBookingButton)
+      }
     }
   }
 }

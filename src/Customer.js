@@ -1,5 +1,8 @@
-class Customer {
+import User from './User'
+
+class Customer extends User {
   constructor(user, bookings = [], rooms = []) {
+    super()
     this.id = user.id
     this.name = user.name
     this.bookings = this.findBookings(bookings)
@@ -19,6 +22,11 @@ class Customer {
       return parseFloat(sum.toFixed(2))
     }, 0)
   }
+
+  createBooking(event, date) {
+    super.createBooking(event, date, this.id)
+  }
+
 }
 
 export default Customer
