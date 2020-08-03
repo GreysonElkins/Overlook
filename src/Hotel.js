@@ -175,6 +175,7 @@ class Hotel extends DataHandler {
 
   findUser(info) {
     if (!this.hasData('users')) return 'This hotel is missing user data'
+    info = isNaN(info) ? info : parseInt(info);
     const result = this.users.find(user => {
       if (Object.values(user).includes(info)) {
         return user

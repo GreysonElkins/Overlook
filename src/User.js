@@ -1,10 +1,10 @@
 class User {
 
-  createBooking(event, date, userId) {
+  createBooking(room, date, userID) {
     const booking = {
-      userId,
+      userID,
       date,
-      roomNumber: event.target.id,
+      roomNumber: room,
       roomServiceCharges: []
     }
 

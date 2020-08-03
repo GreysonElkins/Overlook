@@ -283,6 +283,7 @@ class Page {
           wantsBidet
         ) 
         this.populateRoomCards(filteredRooms)
+        
       })
 
   } 
@@ -310,10 +311,35 @@ class Page {
     }
   }
 
-  findBookingData(event) {
+  findCustomerBookingData(event) {
+    const room = parseInt(event.target.id)
     const date = this.getDateInQuestion()
-    let booking = this.hotel.currentUser.createBooking(event, date)
+    let booking = this.hotel.currentUser.createBooking(room, date)
     this.hotel.makeBooking(booking)
+  }
+
+  findManagerBookingData(room, id) {
+    const date = this.getDateInQuestion()
+    let booking = this.hotel.currentUser.createBooking(room, date, id)
+    this.hotel.makeBooking(booking)
+  }
+
+  setUserToBook(event) {
+    let room = parseInt(event.target.id.substring(11))
+    this.hotel.getData('users')
+      .then(() => {
+        let inputValue = document.getElementById('user-to-book-for').value
+
+        const customer = this.hotel.findUser(inputValue)
+        if (typeof customer === 'string') {
+          const message = document.getElementById('missing-user')
+          message.innerText = customer
+        } else {
+          this.findManagerBookingData(room, customer.id)
+          this.hideElements('#booking-pop-up')
+        }
+      })
+
   }
 
 }

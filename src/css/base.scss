@@ -111,6 +111,10 @@ button {
   z-index: 3;
 }
 
+.booking-pop-up {
+  @extend .sign-in-pop-up
+}
+
 .hidden {
   display: none;
 }

@@ -1,5 +1,6 @@
 import Page from './Page'
-import Hotel from './Hotel'
+import Customer from './Customer'
+import Manager from './Manager'
 // I wanted this to be an object, but couldn't get it 
 // to run findButtons on instantiation
 class EventHandler {
@@ -16,6 +17,8 @@ class EventHandler {
   }
 
   buttonHandler(event, page = new Page()) {
+
+
 
     if (event.target.id === 'log-in') {
       event.preventDefault()
@@ -36,10 +39,24 @@ class EventHandler {
       location.reload()
     } else if (event.target.id === 'filter-rooms') {
       page.checkTags()
+    } else if (event.target.id.includes('submit-user')) {
+      page.hotel.currentUser = new Manager();
+      page.setUserToBook(event)
     }
     
-    const pressBookingButton = () => {
-      page.findBookingData(event)
+    const pressBookingButton = (event) => {
+      if (page.hotel.currentUser instanceof Customer) {
+        page.findCustomerBookingData(event)
+      } else if (page.hotel.currentUser instanceof Manager) {
+        page.hotel.getData('users') 
+          .then (() => {
+            page.showElements('#booking-pop-up')
+            let roomToBook = event.target.id
+            const button = document.getElementById('submit-user')
+            button.id = `${button.id}${roomToBook}`
+
+          })
+      } 
     }
   
     const setBookingButtons = () => {
