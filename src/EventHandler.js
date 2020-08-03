@@ -54,7 +54,6 @@ class EventHandler {
             let roomToBook = event.target.id
             const button = document.getElementById('submit-user')
             button.id = `${button.id}${roomToBook}`
-
           })
       } 
     }

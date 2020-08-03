@@ -2,13 +2,11 @@ class User {
 
   createBooking(room, date, userID) {
     const booking = {
-      userID,
-      date,
-      roomNumber: room,
-      roomServiceCharges: []
+      "userID": userID,
+      "date": date,
+      "roomNumber": room
     }
-
-    console.log(booking)
+    return booking
   }
 }
 

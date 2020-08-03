@@ -24,7 +24,7 @@ class Customer extends User {
   }
 
   createBooking(event, date) {
-    super.createBooking(event, date, this.id)
+    return super.createBooking(event, date, this.id)
   }
 
 }

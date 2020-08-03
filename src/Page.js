@@ -283,9 +283,7 @@ class Page {
           wantsBidet
         ) 
         this.populateRoomCards(filteredRooms)
-        
       })
-
   } 
 
   getSelectedTags(dataType) {
@@ -315,6 +313,7 @@ class Page {
     const room = parseInt(event.target.id)
     const date = this.getDateInQuestion()
     let booking = this.hotel.currentUser.createBooking(room, date)
+    console.log(booking)
     this.hotel.makeBooking(booking)
   }
 
