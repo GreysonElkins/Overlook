@@ -25,8 +25,6 @@ class EventHandler {
             page.goToRoomsPage()
           }
         })
-      // isAuthorized ? load next page: message on DOM, clear inputs
-      // test line 23
     } else if (event.target.id === 'rooms-button') {
       page.goToRoomsPage();
     } else if (event.target.id === 'user-bar-signed-out') {
@@ -34,6 +32,8 @@ class EventHandler {
     } else if (event.target.id === 'sign-out') {
       page.hotel.currentUser = undefined
       location.reload()
+    } else if (event.target.id === 'filter-rooms') {
+      page.checkTags()
     }
   }
 }

@@ -42,15 +42,29 @@ class Page {
     this.hideElements('.home-page', '.sign-in-pop-up')
     this.showElements('.rooms-page', '.sign-in-or-out')
   }
+
+
   
-  populateRoomCards(hotel = this.hotel) {
-    return hotel.getData('rooms') 
+  populateRoomCards(rooms) {
+    let promise1 = this.hotel.getData('bookings')
+    let promise2 = this.hotel.getData('rooms')
+    
+    return Promise.all([promise1, promise2]) 
       .then(() => {
+        if (rooms === undefined) {
+          rooms = this.hotel.findAvailableRooms()
+        }
         const container = document.getElementById('card-container')
-        this.hotel.rooms.forEach(room => {
+        container.innerHTML = ''
+        rooms.forEach(room => {
           container.insertAdjacentHTML('beforeend', this.roomCardTemplate(room))
         })
       })
+    
+    // return this.hotel.getData('rooms') 
+    //   .then(() => {
+    //     })
+    //   })
   }
   
   roomCardTemplate(room) {
@@ -124,56 +138,68 @@ class Page {
   }
 
   populateDashboard(dash) {
-    this.populateUserSection(dash)
-  }
-
-  populateUserSection(dash) {
     const dashboard = document.querySelector(dash)
+    const roomTags = document.getElementById('filter-rooms')
+    const bedTags = document.getElementById('filter-beds')
+
     const promise1 = this.hotel.getData('rooms')
     const promise2 = this.hotel.getData('bookings')
-    let html;
+    let userHtml;
+    let roomTagHtml;
+    let bedTagHtml;
+
+    Promise.resolve(promise1)
+      .then(() => {
+        roomTagHtml = this.populateRoomTags('roomType')
+        bedTagHtml = this.populateRoomTags('bedSize')
+        roomTags.innerHTML = roomTagHtml
+        bedTags.innerHTML = bedTagHtml
+        this.addTagListeners()
+      })
 
     Promise.all([promise1, promise2])
       .then(() => {
-        html = this.getDashboardHtml()
-        dashboard.innerHTML = html 
+        userHtml = this.getUserDashboardData()
+        dashboard.innerHTML = userHtml
       })
   }
 
-  getDashboardHtml() {
-    const date = moment(this.hotel.today).format('MMM DD')
+  getUserDashboardData() {
+    const date = new Date(this.hotel.today) 
+    const printDate = moment(date).format('MMM DD')
 
     if (this.hotel.currentUser instanceof Manager) {
       return `
-      <h3>Manager Dashboard</h3>
-      Rooms available for <date>${date}</date>: 
-      <span id="roomsAvailable">
+      <h3tabindex="0">Manager Dashboard</h3><br />
+      Rooms available for <date>$${printDate}</date>: 
+      <span id="roomsAvailable" tabindex="0">
         ${this.hotel.findAvailableRooms().length}
       </span><br />
-      Revenue on <date>${date}</date>: 
-      <span id="revenue">$${this.hotel.calculateDailyRevenue()}</span><br />
-      Percentage of rooms occupied on <date>${date}</date>:
-      <span id="percentageBooked">
-      ${(this.hotel.rooms.length - this.hotel.findAvailableRooms().length)
-        / this.hotel.rooms.length 
-        * 100}%
+      Revenue on <date>$${printDate}</date>: 
+      <span id="revenue" tabindex="0">
+        $${this.hotel.calculateDailyRevenue()}
+      </span><br />
+      Percentage of rooms occupied on <date>$${printDate}</date>:
+      <span id="percentageBooked" tabindex="0">
+      ${((this.hotel.rooms.length - this.hotel.findAvailableRooms().length) /
+        this.hotel.rooms.length) *
+        100}%
       </span>`;
     } else if (this.hotel.currentUser instanceof Customer) {
       const user = this.hotel.currentUser
       user.bookings = user.findBookings(this.hotel.bookings)
       user.accountBalance = user.findAccountBalance(this.hotel.rooms)
-      console.log(user)
       return `
       <hr>
-      <h3>Guest Dashboard</h3>
-      Account Balance: <span id="accountBalance">
+      <h3 tabindex="0">Guest Dashboard</h3>
+      Account Balance: <span id="accountBalance" tabindex="0">
         $${user.accountBalance}
       </span><br >
-      Up-coming Visits: <ul id="upcoming-visits">
-        ${this.populateUserBookingLists('upcoming')}
+      Up-coming Visits: <ul id="upcoming-visits" tabindex="0">
+        ${this.populateUserBookingLists("upcoming")}
       </ul><br />
-      Previous Visits: <ul id="previous-visits">
-        ${this.populateUserBookingLists('previous')}
+      Previous Visits: <ul id="previous-visits" tabindex="0">
+        ${this.populateUserBookingLists("previous")}
       </ul>
       `;
     }
@@ -181,10 +207,11 @@ class Page {
   
   populateUserBookingLists(list) {
     return this.hotel.currentUser.bookings.reduce((listItems, booking) => {
-      let item = `<li>${moment(booking.date).format('DD MMM YYYY')}</li>`;
-      if (list === 'upcoming' && moment(booking.date) >= moment()) {
+      let date = new Date(booking.date)
+      let item = `<li tabindex="0">${moment(date).format("DD MMM YYYY")}</li>`;
+      if (list === 'upcoming' && moment(date) >= moment()) {
         listItems += item
-      } else if (list === 'previous' && moment(booking.date) < moment()) {
+      } else if (list === 'previous' && moment(date) < moment()) {
         listItems += item
       }
       return listItems
@@ -194,6 +221,94 @@ class Page {
   findRoomImageSource(room) {
     return room.roomType.split(' ').join('-');
   }
+
+  displayPriceFilterSliderValue() {
+    const slider = document.getElementById('max-price');
+    const display = document.getElementById('slider-value')
+    display.innerText = slider.value;
+
+    slider.oninput = function() {
+      display.innerText = this.value; 
+    }
+  }
+
+  populateRoomTags(key) {
+    let roomTags = []
+    return this.hotel.rooms.reduce((roomTagsHtml, room) => {
+      if (!roomTags.includes(room[key])) {
+        roomTags.push(room[key])
+        roomTagsHtml += `
+        <button class="room-tag" id="${key}">${room[key]}</button>`
+      }
+      return roomTagsHtml
+    }, '')
+  }
+
+  addTagListeners() {
+    const tags = document.querySelectorAll('.room-tag')
+    for (let i = 0; i < tags.length; i ++) {
+      tags[i].addEventListener('click', this.toggleTagState)
+    }
+  }
+ 
+  toggleTagState(event) {
+    let tag = event.target
+    if (tag.classList.contains('selected')) {
+      tag.classList.remove('selected')
+      tag.style.backgroundColor = "#4E241E"
+    } else {
+      tag.classList.add('selected')
+      tag.style.backgroundColor = "#283D3B"
+    }
+  }
+
+  checkTags() {
+    let promise1 = this.hotel.getData('bookings')
+    let promise2 = this.hotel.getData('rooms')
+    
+    const dateInQuestion = this.getDateInQuestion() 
+    const selectedRoomTags = this.getSelectedTags('#roomType')
+    const selectedBedTags = this.getSelectedTags('#bedSize')
+    const numberOfBeds = document.getElementById('number-beds').value
+    const wantsBidet = document.getElementById('select-bidet').checked
+
+    Promise.all([promise1, promise2])
+      .then(() => {
+        let filteredRooms = this.hotel.findAvailableRoomsByWhatever(
+          dateInQuestion, 
+          selectedRoomTags, 
+          selectedBedTags, 
+          numberOfBeds, 
+          wantsBidet
+        ) 
+        this.populateRoomCards(filteredRooms)
+      })
+
+  } 
+
+  getSelectedTags(dataType) {
+    const roomTags = document.querySelectorAll(dataType)
+    const selectedTags = []
+    roomTags.forEach(tag => {
+      if (tag.classList.contains('selected')) {
+        let value = tag.innerText
+        selectedTags.push(value)
+      }
+    })
+    return selectedTags
+  } 
+
+  getDateInQuestion() {
+    const input = document.getElementById('date-in-question').value
+    if (input === "") {
+      return this.hotel.today
+    } else {
+      let unformattedDate = new Date(input)
+      const dateInQuestion = moment(unformattedDate).format('YYYY/MM/DD')
+      return dateInQuestion
+    }
+  }
+
 }
 
 export default Page

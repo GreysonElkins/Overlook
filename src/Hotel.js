@@ -95,18 +95,56 @@ class Hotel extends DataHandler {
     if (!this.isDate(date)) return 'The date is an unexpected format'
     let availableRooms = this.findAvailableRooms(date)
     if (!Array.isArray(availableRooms)) return availableRooms
-    let availableRoomType = availableRooms.filter(room => {
-      if (room.roomType === roomType) return room
-    })
+    let openRoomType = availableRooms.filter(room => room.roomType === roomType)
 
     if (availableRooms === 'This hotel is missing room data') {
       return 'This hotel is missing room data'
-    } else if (availableRoomType.length > 0) {
-      return availableRoomType
+    } else if (openRoomType.length > 0) {
+      return openRoomType
     } else {
       return `We're so sorry but none of the ${roomType}s ` +
       `are available on that date, please try finding another room`
     }
+  }
+
+  findAvailableRoomsByWhatever(
+    date, roomType, bedTypeWanted, numberOfBeds, bidet
+  ) {
+    let availableRooms
+    if (roomType.length > 0) {
+      availableRooms = roomType.reduce((roomTypesAvailable, room) => {
+        let specificRooms = this.findAvailableRoomsByType(room, date)
+        roomTypesAvailable = roomTypesAvailable.concat(specificRooms)
+        return roomTypesAvailable
+      }, [])
+    } else {
+      availableRooms = this.findAvailableRooms(date)
+    } 
+
+    if (!Array.isArray(availableRooms)) return availableRooms
+
+    if (bedTypeWanted.length > 0) {
+      availableRooms = availableRooms.reduce((roomsByBedType, room) => {
+        if (bedTypeWanted.includes(room.bedSize)) {
+          roomsByBedType.push(room)
+        }
+        return roomsByBedType
+      }, [])
+    }
+     
+    if (numberOfBeds !== '') {
+      parseInt(numberOfBeds)
+      availableRooms = availableRooms.filter(room => {
+        if (room.numBeds === numberOfBeds) {
+          return room 
+        }
+      })
+    }
+    
+    availableRooms = availableRooms.filter(room => {
+      if (room.bidet === bidet) return room
+    })
+    return availableRooms
   }
 
   calculateDailyRevenue(date = this.today) {
@@ -116,7 +154,7 @@ class Hotel extends DataHandler {
       if (bookedRooms.includes(room.number)) {
         revenue += room.costPerNight
       }
-      return revenue
+      return parseFloat(revenue.toFixed(2))
     }, 0)
   }
 
