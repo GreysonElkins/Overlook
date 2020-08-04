@@ -51,7 +51,6 @@ function buttonHandler(event) {
 }
 
 const pressBookingButton = (event) => {
-  console.log(page)
   if (page.currentUser instanceof Customer) {
     page.findCustomerBookingData(event)
   } else if (page.currentUser instanceof Manager) {

@@ -295,7 +295,6 @@ const page = {
   },
 
   getDateInQuestion() {
-    console.log(this.hotel.today)
     const input = document.getElementById('date-in-question').value
     if (input === "") {
       this.setUserMessage(`Here's our availability today` );
@@ -341,6 +340,8 @@ const page = {
           this.hideElements('#booking-pop-up')
         }
       })
+    const button = document.getElementById(`submit-user${room}`);
+    button.id = `submit-user`;
   },
 
   searchForBookings() {
