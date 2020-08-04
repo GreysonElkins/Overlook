@@ -175,6 +175,7 @@ class Hotel extends DataHandler {
 
   findUser(info) {
     if (!this.hasData('users')) return 'This hotel is missing user data'
+    info = isNaN(info) ? info : parseInt(info);
     const result = this.users.find(user => {
       if (Object.values(user).includes(info)) {
         return user
@@ -188,18 +189,19 @@ class Hotel extends DataHandler {
     }
   }
   
-  authenticateUser(credentials) {
+  authenticateUser(credentials, page) {
     let password = "overlook2020"
     if (credentials.username === "manager" 
     && credentials.password === password) {
-      this.currentUser = new Manager()
+      page.currentUser = new Manager()
       return this.getData('users')
     } else if (credentials.username.includes('customer') 
     && credentials.password === password) {
       return this.getData('users')
         .then(() => {
           if (this.checkUserId(credentials.username) !== false) {
-            return this.currentUser = this.checkUserId(credentials.username)
+            page.currentUser = this.checkUserId(credentials.username)
+            return 'GO!'
           }
         })
     }
@@ -211,7 +213,7 @@ class Hotel extends DataHandler {
     if (currentUser !== 'No user was found, please adjust your search') {
       return new Customer(currentUser, this.bookings, this.rooms)
     } else {
-      return false
+      return undefined
     }
   }
 
