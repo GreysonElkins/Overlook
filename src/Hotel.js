@@ -220,6 +220,14 @@ class Hotel extends DataHandler {
   getData(src) {
     return super.getData(src, this)
   }
+
+  findAndDeleteBooking(event) {
+    console.log('press')
+    const booking = this.bookings.find(booking => {
+      return booking.id === event.target.id
+    }) 
+    this.deleteBooking(booking)
+  }
 }
 
 

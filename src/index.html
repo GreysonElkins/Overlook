@@ -8,7 +8,6 @@
     <h1 tabindex="0">The Overlook Hotel</h1>
     <nav>
       <span class="sign-in-or-out">
-        <button id="about-button" tabindex="0">About</button>
         <img class="icon" src="/images/user-icon.png" alt="user icon" tabindex="0"/>
         <button class="" id="user-bar-signed-out" tabindex="0">sign in</button>
         <span class="hidden" id="user-bar-signed-in">
@@ -20,10 +19,6 @@
   </header>
   <section class="page-container">
     <section class="home-page" id="home-page">
-      <nav>
-        <button id="about-button" tabindex="0">About</button>
-        <button id="rooms-button" tabindex="0">Rooms</button>
-      </nav>
       <img src="images/overlook.jpg" class="overlook-image"
       alt="The Overlook, a hotel just below the peak of a snowcapped
       mountain during summer, soft clouds billow over the peak under a blue sky"/>
@@ -36,16 +31,15 @@
         </div>
         Number of Beds: <input id="number-beds"/> <br/>
         Type of Beds:<div id="filter-beds">
-
         </div><br />
         Bidet? <input type="checkbox" id='select-bidet'><br />
         <!-- <input type="range" min="180" max="490" value="300" class="slider" id="max-price"><br />
         <span id="slider-value">check </span> -->
         <button id="filter-rooms">Filter Rooms</button>
         <section class="manager-dash hidden">
-          <span class="user-search" tabindex="0">
+          <span class="user-booking-search" tabindex="0">
             <hr>
-            <input />
+            <input id="user-booking-query"/>
             <button tabindex="0" id="user-search">search</button>
             <span id="foundUser"></span>
           </span>
@@ -59,6 +53,18 @@
     </section>
     <section class="rooms-page hidden" id="rooms-page">
       <section class="card-container" id="card-container">
+      </section>
+    </section>
+    <section class="search-results hidden" id="search-results">
+      <section class="card-container" id="card-container-bookings">
+            <section class="card" tabindex="0">
+              <div class="card-title">
+                asdl;aerga sdfl;skcmei
+              </div>
+              <div class="card-body">
+                <button>DELETE</button>
+              </div>
+            </section> `
       </section>
     </section>
   </section>

@@ -44,7 +44,8 @@ function buttonHandler(event) {
     setTimeout(setBookingButtons, 1000)
   } else if (event.target.id.includes('submit-user')) {
     page.setUserToBook(event)
-  }
+  } else if (event.target.id === 'user-search')
+    page.searchForBookings()
 }
 
 const pressBookingButton = (event) => {
