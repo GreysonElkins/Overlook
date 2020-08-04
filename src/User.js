@@ -8,6 +8,8 @@ class User {
     }
     return booking
   }
+
+  
 }
 
 export default User

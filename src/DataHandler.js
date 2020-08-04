@@ -32,6 +32,29 @@ class DataHandler {
         console.log(error)
       })
   }
+
+  // deleteBooking(event) {
+  //   fetch(
+  //     `https://fe-apps.herokuapp.com/api/v1/overlook/1904/bookings/bookings/${event.target.id}`,
+  //     {
+  //       method: 'DELETE'
+  //     })
+  //     .then(response => response.json)
+  // }
+
+  deleteBooking(event) {
+    fetch(`https://fe-apps.herokuapp.com/api/v1/overlook/1904/bookings/bookings`, {
+      method: "DELETE",
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({"id": event}),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log('Success', data);
+      })
+      .catch((err) => console.log(err));
+  }
+
 }
 
 export default DataHandler

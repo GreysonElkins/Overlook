@@ -337,8 +337,70 @@ const page = {
           this.hideElements('#booking-pop-up')
         }
       })
-
   },
+
+  searchForBookings() {
+    const input = document.getElementById('user-booking-query').value
+    const user = this.hotel.findUser(input)
+    if (typeof(user) === "object") {
+      let promise1 = this.hotel.getData('users')
+      let promise2 = this.hotel.getData('bookings')
+      
+      Promise.all([promise1, promise2])
+        .then(() => {
+          const userInfo = new Customer(user, this.hotel.bookings)
+          this.hideElements('#rooms-page')
+          this.showElements('#search-results')
+          this.populateBookingCards(userInfo)
+        })
+    }
+  },
+
+  populateBookingCards(user) {
+    user.bookings.sort((a, b) => moment(b.date) - moment(a.date))
+    let bookingCards = user.bookings.reduce((htmlBlock, booking) => {
+      const newCard = this.makeCard(booking)
+      htmlBlock += newCard
+      return htmlBlock
+    }, '')
+    console.log(user.bookings)
+    const section = document.getElementById('card-container-bookings')
+    section.innerHTML = bookingCards
+    this.activateDeleteButtons()
+  },
+
+  activateDeleteButtons() {
+    const deleteButtons = document.querySelectorAll('.delete-button')
+    for (let i = 0; i < deleteButtons.length; i++) {
+      deleteButtons[i].addEventListener('click', () => {
+        let id = event.target.id
+        this.hotel.deleteBooking(id)
+        this.searchForBookings()
+      })
+    }
+  },
+
+  makeCard(booking) {
+    const dateInQuestion = new Date (booking.date)
+    const mainBlock = `
+    <section class="card" tabindex="0">
+      <div class="card-title">
+        ${booking.date}, Room Number ${booking.roomNumber}` 
+    let finalBlock;
+    
+    if (moment(dateInQuestion) > moment(this.hotel.today)) {
+      finalBlock = `
+          <button class="delete-button" id="${booking.id}">
+            DELETE
+          </button>
+          </div>
+        </section>`
+    } else {
+      finalBlock = `</div></section>`
+    }
+
+    return mainBlock + finalBlock
+  }
 
 }
 
