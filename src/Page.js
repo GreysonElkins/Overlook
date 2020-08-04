@@ -217,6 +217,7 @@ const page = {
   },
 
   displayPriceFilterSliderValue() {
+    // not implemented
     const slider = document.getElementById('max-price');
     const display = document.getElementById('slider-value')
     display.innerText = slider.value;
@@ -306,7 +307,6 @@ const page = {
     const room = parseInt(event.target.id)
     const date = this.getDateInQuestion()
     let booking = this.currentUser.createBooking(room, date)
-    console.log(booking)
     this.hotel.makeBooking(booking)
   },
 
@@ -351,13 +351,13 @@ const page = {
   },
 
   populateBookingCards(user) {
-    user.bookings.sort((a, b) => moment(b.date) - moment(a.date))
+    user.bookings = this.sortBookingsByDate(user)
+    // user.bookings.sort((a, b) => moment(b.date) - moment(a.date))
     let bookingCards = user.bookings.reduce((htmlBlock, booking) => {
       const newCard = this.makeCard(booking)
       htmlBlock += newCard
       return htmlBlock
     }, '')
-    console.log(user.bookings)
     const section = document.getElementById('card-container-bookings')
     section.innerHTML = bookingCards
     this.activateDeleteButtons()
@@ -367,11 +367,19 @@ const page = {
     const deleteButtons = document.querySelectorAll('.delete-button')
     for (let i = 0; i < deleteButtons.length; i++) {
       deleteButtons[i].addEventListener('click', () => {
-        let id = event.target.id
+        let id = parseInt(event.target.id)
         this.hotel.deleteBooking(id)
         this.searchForBookings()
       })
     }
+  },
+
+  sortBookingsByDate(user) {
+    return user.bookings.sort((a, b) => {
+      a.newDate = new Date(a.date)
+      b.newDate = new Date(b.date)
+      return moment(b.newDate) - moment(a.newDate)
+    })
   },
 
   makeCard(booking) {
