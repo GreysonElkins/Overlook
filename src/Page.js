@@ -133,7 +133,7 @@ const page = {
 
   populateDashboard(dash) {
     const dashboard = document.querySelector(dash)
-    const roomTags = document.getElementById('filter-rooms')
+    const roomTags = document.getElementById('filter-rooms-section')
     const bedTags = document.getElementById('filter-beds')
 
     const promise1 = this.hotel.getData('rooms')
@@ -146,6 +146,8 @@ const page = {
       .then(() => {
         roomTagHtml = this.populateRoomTags('roomType')
         bedTagHtml = this.populateRoomTags('bedSize')
+        roomTags.innerHTML = ''
+        bedTags.innerHTML = ''
         roomTags.innerHTML = roomTagHtml
         bedTags.innerHTML = bedTagHtml
         this.addTagListeners()
@@ -308,12 +310,14 @@ const page = {
     const date = this.getDateInQuestion()
     let booking = this.currentUser.createBooking(room, date)
     this.hotel.makeBooking(booking)
+      .then(() => this.goToRoomsPage())
   },
 
   findManagerBookingData(room, id) {
     const date = this.getDateInQuestion()
     let booking = this.currentUser.createBooking(room, date, id)
     this.hotel.makeBooking(booking)
+      .then(() => this.goToRoomsPage())
   },
 
   setUserToBook(event) {

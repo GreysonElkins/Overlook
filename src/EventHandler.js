@@ -28,7 +28,8 @@ class EventHandler {
             setTimeout(setBookingButtons, 1000)
           }
         })
-    } else if (event.target.id === 'rooms-button') {
+    } else if (event.target.id === 'see-all-rooms') {
+      console.log('press')
       page.goToRoomsPage();
     } else if (event.target.id === 'user-bar-signed-out') {
       page.showElements('.sign-in-pop-up')
@@ -36,6 +37,7 @@ class EventHandler {
       page.hotel.currentUser = undefined
       location.reload()
     } else if (event.target.id === 'filter-rooms') {
+      console.log('press')
       page.checkTags()
     } else if (event.target.id.includes('submit-user')) {
       page.hotel.currentUser = new Manager();
