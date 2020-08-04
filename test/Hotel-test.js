@@ -205,40 +205,46 @@ describe('Hotel', () => {
 
   describe('user authentification', () => {
     let hotel;
+    let mockResponse; 
 
     beforeEach(() => {
       hotel = new Hotel()
       global.document = {}
       global.fetch = () => {
-        return Promise
+        return mockResponse
       }
-      Promise = {
-        then: () => {
-          return Promise
+      mockResponse = {
+        then: (method) => {
+          method()
+          return mockResponse
         },
         catch: () => {
-          return Promise
+          return mockResponse
         }
       }
       overlook.storeData(users);
       chai.spy.on(global, 'fetch') 
       chai.spy.on(global.fetch, 'then')
-      chai.spy.on(hotel, ['checkUserId'], () => {new Customer(users[0])})
+      chai.spy.on(hotel, ['checkUserId'], () => new Customer(users[0]))
+      chai.spy.on(overlook, 'getData', () => mockResponse)
     })
     
-    it('should allow a manager to log in with the right password', () => {
+    it('should allow a manager to log in with the right password,' + 
+    ' and set the page\'s current user to be an instance of manager', () => {
+      const mockPage = {}
       const managerCredentials = {username: 'manager', password: 'overlook2020'}
-      overlook.authenticateUser(managerCredentials) 
-      expect(overlook.currentUser).to.be.an.instanceOf(Manager)
+      overlook.authenticateUser(managerCredentials, mockPage) 
+      expect(mockPage.currentUser).to.be.an.instanceOf(Manager)
     })
 
-    it('should not allow a manager to log in with the wrong password', () => {
+    it('should not set a manager with the wrong password', () => {
+      const mockPage = {currentUser: undefined}
       const managerCredentials = {
         username: 'manager', 
         password: 'overlook2021'
       } 
-      let result = overlook.authenticateUser(managerCredentials)
-      expect(result).to.equal(undefined)
+      overlook.authenticateUser(managerCredentials, mockPage)
+      expect(mockPage.currentUser).to.equal(undefined)
     })
 
     it('should be able to find customer\'s id', () => {
@@ -247,22 +253,36 @@ describe('Hotel', () => {
     })
 
     it('should allow a client to log in with the correct password' +
-    ' and fetch user data', () => {
+    ' and set that client as a User on the page', () => {
+      const mockPage = { currentUser: undefined }
       const clientCredentials = {
         username: 'customer1',
         password: 'overlook2020'
       }
-      overlook.authenticateUser(clientCredentials)
-      expect(fetch).to.have.been.called(1)
+      overlook.authenticateUser(clientCredentials, mockPage)
+      expect(mockPage.currentUser).to.be.an.instanceof(Customer)
     })
 
+    it('should fetch user data when logging in a user', () => {
+      const mockPage = {}
+      const clientCredentials = {
+        username: 'customer1',
+        password: 'overlook2020'
+      } 
+      overlook.authenticateUser(clientCredentials, mockPage)
+      expect(overlook.getData).to.have.been.called(1)
+      expect(overlook.getData).to.have.been.called.with('users')
+    })
+      
+
     it('should only allow users already in the system to log in', () => {
+      const mockPage = {currentUser: undefined}
       const clientCredentials = {
         username: 'customer11',
         password: 'overlook2020'
       }
-      overlook.authenticateUser(clientCredentials)
-      expect(overlook.currentUser).to.equal(undefined)
+      overlook.authenticateUser(clientCredentials, mockPage)
+      expect(mockPage.currentUser).to.equal(undefined)
     })
 
     // it('should store the current user as a customer upon authenticating ' + 
@@ -274,16 +294,5 @@ describe('Hotel', () => {
     //   overlook.authenticateUser(clientCredentials)
     //   expect(overlook.currentUser).to.be.an.instanceOf(Customer)
     // })
-
-    it('should create a manager as the currentUser' + 
-    'when a manager logs in', () => {
-      const managerCredentials = {
-        username: 'manager',
-        password: 'overlook2020'
-      }
-      overlook.authenticateUser(managerCredentials)
-      expect(overlook.currentUser).to.be.an.instanceOf(Manager)
-
-    })
   })
 })
