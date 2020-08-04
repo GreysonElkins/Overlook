@@ -47,11 +47,11 @@ const page = {
   populateRoomCards(rooms) {
     let promise1 = this.hotel.getData('bookings')
     let promise2 = this.hotel.getData('rooms')
-    
+    let date = this.getDateInQuestion()
     return Promise.all([promise1, promise2]) 
       .then(() => {
         if (rooms === undefined) {
-          rooms = this.hotel.findAvailableRooms()
+          rooms = this.hotel.findAvailableRooms(date)
         }
         const container = document.getElementById('card-container')
         container.innerHTML = ''
@@ -166,7 +166,7 @@ const page = {
 
     if (this.currentUser instanceof Manager) {
       return `
-      <h3tabindex="0">Manager Dashboard</h3><br />
+      <h3 tabindex="0">The Overlook at a Glance</h3><br />
       Rooms available for <date>$${printDate}</date>: 
       <span id="roomsAvailable" tabindex="0">
         ${this.hotel.findAvailableRooms().length}
@@ -295,11 +295,17 @@ const page = {
   },
 
   getDateInQuestion() {
+    console.log(this.hotel.today)
     const input = document.getElementById('date-in-question').value
     if (input === "") {
+      this.setUserMessage(`Here's our availability today` );
       return this.hotel.today
     } else {
       let unformattedDate = new Date(input)
+      unformattedDate.setDate(unformattedDate.getDate() + 1);
+      this.setUserMessage(
+        `Here\'s our availability on ${moment(unformattedDate).format("MMM DD")}`
+      );
       const dateInQuestion = moment(unformattedDate).format('YYYY/MM/DD')
       return dateInQuestion
     }
@@ -404,10 +410,13 @@ const page = {
     } else {
       finalBlock = `</div></section>`
     }
-
     return mainBlock + finalBlock
-  }
+  },
 
+  setUserMessage(message) {
+    const display = document.getElementById('message-to-user')
+    display.innerText = message
+  }
 }
 
 export default page

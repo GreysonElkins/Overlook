@@ -24,6 +24,8 @@
       mountain during summer, soft clouds billow over the peak under a blue sky"/>
     </section>
     <section class="user-pane hidden" id="user-pane">
+      <h3 id="message-to-user">Here's our availability tonight:</h3>
+      <hr>
       <section class="search-window">
         <h3>Filter Rooms:</h3>
         <input type="date" id="date-in-question"/>
@@ -40,6 +42,7 @@
         <section class="manager-dash hidden">
           <span class="user-booking-search" tabindex="0">
             <hr>
+            <h3>Search for Guests:</h3>
             <input id="user-booking-query"/>
             <button tabindex="0" id="user-search">search</button>
             <span id="foundUser"></span>
@@ -53,11 +56,13 @@
       </section>
     </section>
     <section class="rooms-page hidden" id="rooms-page">
+
       <section class="card-container" id="card-container">
       </section>
     </section>
     <section class="search-results hidden" id="search-results">
       <section class="card-container" id="card-container-bookings">
+        
       </section>
     </section>
   </section>
@@ -71,6 +76,7 @@
         <label for="password">password: </label>
         <input id="password" type="password" tabindex="0" />
       </span>
+      <span class="hidden" id="login-message">A user with these credentials was not found, please try again</span>
       <button tabindex="0" id="log-in">Login</button>
     </form>
   </section>

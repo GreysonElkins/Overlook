@@ -26,7 +26,9 @@ function buttonHandler(event) {
     const userCredentials = page.getLogInInfoFromForm()
     page.hotel.authenticateUser(userCredentials, page)
       .then(() => {
-        if (page.currentUser !== undefined) {
+        if (page.currentUser === undefined) {
+          page.showElements('#login-message')
+        } else {
           page.goToRoomsPage()  
           setTimeout(setBookingButtons, 1000)
         }

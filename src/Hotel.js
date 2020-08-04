@@ -201,9 +201,10 @@ class Hotel extends DataHandler {
         .then(() => {
           if (this.checkUserId(credentials.username) !== false) {
             page.currentUser = this.checkUserId(credentials.username)
-            return 'GO!'
           }
         })
+    } else {
+      return this.getData('users')
     }
   }
 
