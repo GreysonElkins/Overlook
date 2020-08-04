@@ -58,13 +58,7 @@ const page = {
         rooms.forEach(room => {
           container.insertAdjacentHTML('beforeend', this.roomCardTemplate(room))
         })
-
       })
-    
-    // return this.hotel.getData('rooms') 
-    //   .then(() => {
-    //     })
-    //   })
   },
   
   roomCardTemplate(room) {
