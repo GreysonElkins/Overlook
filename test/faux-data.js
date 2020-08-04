@@ -289,6 +289,16 @@ const inputNodes = [
   },
 ];
 
+const mockResponse = {
+  then: (method) => {
+    method(mockResponse);
+    return mockResponse;
+  },
+  catch: () => {
+    return mockResponse;
+  },
+  all: () => mockResponse,
+}
 
 export {
   users,
@@ -296,5 +306,6 @@ export {
   bookings,
   allBooked,
   junk,
-  inputNodes
+  inputNodes,
+  mockResponse
 }
