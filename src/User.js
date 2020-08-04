@@ -7,9 +7,7 @@ class User {
       "roomNumber": room
     }
     return booking
-  }
-
-  
+  }  
 }
 
 export default User
