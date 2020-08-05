@@ -1,6 +1,7 @@
 import './css/base.scss';
 import './css/user-pane.scss'
 import './css/room-cards.scss';
+import './css/media-queries.scss'
 
 import './images/background.png';
 import './images/user-icon.png';

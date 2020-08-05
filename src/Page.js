@@ -42,7 +42,7 @@ const page = {
       .then(() => {
         this.findLoggedInElements()
       })
-    this.hideElements('.home-page', '.sign-in-pop-up')
+    this.hideElements(".home-page", ".sign-in-pop-up", "#search-results");
     this.showElements('.rooms-page', '.sign-in-or-out')
   },
 
@@ -73,7 +73,6 @@ const page = {
 
   activateBookingButtons() {
     const bookingButtons = document.querySelectorAll(".booking-button");
-    console.log(bookingButtons)
     for (let i = 0; i < bookingButtons.length; i++) {
       bookingButtons[i].addEventListener("click", (event) => {
         if (this.currentUser instanceof Customer) {
@@ -91,7 +90,6 @@ const page = {
   },
   
   pressBookingButton(event) {
-    console.log()
     if (this.currentUser instanceof Customer) {
       this.findCustomerBookingData(event)
     } else if (this.currentUser instanceof Manager) {

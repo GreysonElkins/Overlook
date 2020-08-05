@@ -17,6 +17,7 @@ describe("Page", () => {
 
   beforeEach(() => {
     global.document = {}
+    Object.prototype.addEventListener = () => {};
     chai.spy.on(document, ['querySelectorAll'], () => {
       return inputNodes;
     })
@@ -154,7 +155,6 @@ describe("Page", () => {
   describe('user dashboards', () => {
     
     beforeEach(() => {
-      Object.prototype.addEventListener = () => {}
       page.currentUser = new Customer(users[0])
       chai.spy.on(page.hotel, [
         'calculateDailyRevenue', 
@@ -252,13 +252,13 @@ describe("Page", () => {
       page.setUserToBook(event)
       expect(page.hotel.getData).to.have.been.called(5)
       expect(page.hotel.getData).to.have.been.called.with('users')
-      expect(document.getElementById).to.have.been.called(6)
+      expect(document.getElementById).to.have.been.called(5)
       expect(page.hotel.findUser).to.have.been.called(1)
     })
     
     it('should remove the booking pop-up if a user is found', () => {
       page.setUserToBook(event)
-      expect(page.hideElements).to.have.been.called(4)
+      expect(page.hideElements).to.have.been.called(5)
     })
 
     it('should be able to find a user to search for in an input field', () => {
