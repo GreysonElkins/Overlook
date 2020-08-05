@@ -1,7 +1,6 @@
 import './css/base.scss';
 import './css/user-pane.scss'
 import './css/room-cards.scss';
-import './css/media-queries.scss'
 
 import './images/background.png';
 import './images/user-icon.png';
@@ -10,8 +9,6 @@ import './images/single-room.jpg';
 import './images/residential-suite.jpg';
 import './images/junior-suite.jpg';
 import './images/suite.jpg';
-import Manager from './Manager'
-import Customer from './Customer'
 
 import page from './Page'
 
@@ -31,12 +28,10 @@ function buttonHandler(event) {
           page.showElements('#login-message')
         } else {
           page.goToRoomsPage()  
-          // setTimeout(setBookingButtons, 1000)
         }
       })
   } else if (event.target.id === 'see-all-rooms') {
     page.goToRoomsPage();
-    // setTimeout(setBookingButtons, 1000)
   } else if (event.target.id === 'user-bar-signed-out') {
     page.showElements('.sign-in-pop-up')
   } else if (event.target.id === 'sign-out') {
@@ -44,10 +39,8 @@ function buttonHandler(event) {
     location.reload()
   } else if (event.target.id === 'filter-rooms') {
     page.checkTags()
-    // setTimeout(setBookingButtons, 1000)
   } else if (event.target.id.includes('submit-user')) {
     page.setUserToBook(event)
-    // setTimeout(setBookingButtons, 2000);
   } else if (event.target.id === 'user-search')
     page.searchForBookings()
 }
