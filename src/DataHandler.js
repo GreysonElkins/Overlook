@@ -9,7 +9,7 @@ class DataHandler {
   }
 
   makeBooking(booking) {
-    fetch(
+    return fetch(
       `https://fe-apps.herokuapp.com/api/v1/overlook/1904/bookings/bookings`, 
       {
         method: 'POST',
@@ -33,19 +33,23 @@ class DataHandler {
   }
 
   deleteBooking(id) {
-    fetch(`https://fe-apps.herokuapp.com/api/v1/overlook/1904/bookings/bookings`, {
-      method: "DELETE",
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({"id": id}),
-    })
-      // .then(response => response.json())
-      // .then(data => {
-      //   console.log(data);
-      // })
-      // .catch((err) => console.log(err));
-  }
-  // also, will this response be empty if successful?
-
+    fetch(
+      `https://fe-apps.herokuapp.com/api/v1/overlook/1904/bookings/bookings`, {
+        method: "DELETE",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({"id": id}),
+      })
+      .then(response => {
+        if (response.ok) {
+          alert('This reservation has been successfully removed')
+        } else {
+          throw new Error('Something went wrong')
+        }
+      })
+      .catch((err) => {
+        alert(`Something went wrong! Please try again. ERROR: ${err}`)
+      })
+  }    
 }
 
 export default DataHandler

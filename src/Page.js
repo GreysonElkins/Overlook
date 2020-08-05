@@ -39,28 +39,71 @@ const page = {
 
   goToRoomsPage(rooms) {
     this.populateRoomCards(rooms) 
-      .then(() => this.findLoggedInElements())
-    this.hideElements('.home-page', '.sign-in-pop-up')
+      .then(() => {
+        this.findLoggedInElements()
+      })
+    this.hideElements(".home-page", ".sign-in-pop-up", "#search-results");
     this.showElements('.rooms-page', '.sign-in-or-out')
   },
 
   populateRoomCards(rooms) {
     let promise1 = this.hotel.getData('bookings')
     let promise2 = this.hotel.getData('rooms')
-    
+    let date = this.getDateInQuestion()
     return Promise.all([promise1, promise2]) 
       .then(() => {
         if (rooms === undefined) {
-          rooms = this.hotel.findAvailableRooms()
+          rooms = this.hotel.findAvailableRooms(date)
         }
         const container = document.getElementById('card-container')
         container.innerHTML = ''
-        rooms.forEach(room => {
-          container.insertAdjacentHTML('beforeend', this.roomCardTemplate(room))
-        })
+        if (Array.isArray(rooms)) {
+          rooms.forEach(room => {
+            container.insertAdjacentHTML(
+              'beforeend', this.roomCardTemplate(room)
+            )
+          })
+          this.activateBookingButtons()
+          this.hideElements('.apology')
+        } else {
+          this.showElements('.apology')
+        }
       })
   },
+
+  activateBookingButtons() {
+    const bookingButtons = document.querySelectorAll(".booking-button");
+    for (let i = 0; i < bookingButtons.length; i++) {
+      bookingButtons[i].addEventListener("click", (event) => {
+        if (this.currentUser instanceof Customer) {
+          this.findCustomerBookingData(event);
+        } else if (this.currentUser instanceof Manager) {
+          this.hotel.getData("users").then(() => {
+            this.showElements("#booking-pop-up");
+            let roomToBook = event.target.id;
+            const button = document.getElementById("submit-user");
+            button.value = `${roomToBook}`;
+          });
+        }
+      });
+    }
+  },
   
+  pressBookingButton(event) {
+    if (this.currentUser instanceof Customer) {
+      this.findCustomerBookingData(event)
+    } else if (this.currentUser instanceof Manager) {
+      this.hotel.getData('users')
+        .then(() => {
+          this.showElements('#booking-pop-up')
+          let roomToBook = event.target.id
+          const button = document.getElementById('submit-user')
+          button.value = `${roomToBook}`
+        })
+    }
+  },
+
+
   roomCardTemplate(room) {
     return `
       <section class="card" tabindex="0">
@@ -133,7 +176,7 @@ const page = {
 
   populateDashboard(dash) {
     const dashboard = document.querySelector(dash)
-    const roomTags = document.getElementById('filter-rooms')
+    const roomTags = document.getElementById('filter-rooms-section')
     const bedTags = document.getElementById('filter-beds')
 
     const promise1 = this.hotel.getData('rooms')
@@ -146,6 +189,8 @@ const page = {
       .then(() => {
         roomTagHtml = this.populateRoomTags('roomType')
         bedTagHtml = this.populateRoomTags('bedSize')
+        roomTags.innerHTML = ''
+        bedTags.innerHTML = ''
         roomTags.innerHTML = roomTagHtml
         bedTags.innerHTML = bedTagHtml
         this.addTagListeners()
@@ -164,12 +209,12 @@ const page = {
 
     if (this.currentUser instanceof Manager) {
       return `
-      <h3tabindex="0">Manager Dashboard</h3><br />
-      Rooms available for <date>$${printDate}</date>: 
+      <h3 tabindex="0">The Overlook at a Glance</h3><br />
+      Rooms available for <date>${printDate}</date>: 
       <span id="roomsAvailable" tabindex="0">
         ${this.hotel.findAvailableRooms().length}
       </span><br />
-      Revenue on <date>$${printDate}</date>: 
+      Revenue on <date>${printDate}</date>: 
       <span id="revenue" tabindex="0">
         $${this.hotel.calculateDailyRevenue()}
       </span><br />
@@ -217,6 +262,7 @@ const page = {
   },
 
   displayPriceFilterSliderValue() {
+    // not implemented
     const slider = document.getElementById('max-price');
     const display = document.getElementById('slider-value')
     display.innerText = slider.value;
@@ -294,9 +340,14 @@ const page = {
   getDateInQuestion() {
     const input = document.getElementById('date-in-question').value
     if (input === "") {
+      this.setUserMessage(`Here's our availability today` );
       return this.hotel.today
     } else {
       let unformattedDate = new Date(input)
+      unformattedDate.setDate(unformattedDate.getDate() + 1);
+      this.setUserMessage(
+        `Here\'s our availability on ${moment(unformattedDate).format("MMM DD")}`
+      );
       const dateInQuestion = moment(unformattedDate).format('YYYY/MM/DD')
       return dateInQuestion
     }
@@ -306,18 +357,19 @@ const page = {
     const room = parseInt(event.target.id)
     const date = this.getDateInQuestion()
     let booking = this.currentUser.createBooking(room, date)
-    console.log(booking)
     this.hotel.makeBooking(booking)
+      .then(() => this.goToRoomsPage())
   },
 
   findManagerBookingData(room, id) {
     const date = this.getDateInQuestion()
     let booking = this.currentUser.createBooking(room, date, id)
     this.hotel.makeBooking(booking)
+      .then(() => this.goToRoomsPage())
   },
 
   setUserToBook(event) {
-    let room = parseInt(event.target.id.substring(11))
+    let room = parseInt(event.target.value)
     this.hotel.getData('users')
       .then(() => {
         let inputValue = document.getElementById('user-to-book-for').value
@@ -351,13 +403,12 @@ const page = {
   },
 
   populateBookingCards(user) {
-    user.bookings.sort((a, b) => moment(b.date) - moment(a.date))
+    user.bookings = this.sortBookingsByDate(user)
     let bookingCards = user.bookings.reduce((htmlBlock, booking) => {
       const newCard = this.makeCard(booking)
       htmlBlock += newCard
       return htmlBlock
     }, '')
-    console.log(user.bookings)
     const section = document.getElementById('card-container-bookings')
     section.innerHTML = bookingCards
     this.activateDeleteButtons()
@@ -367,11 +418,19 @@ const page = {
     const deleteButtons = document.querySelectorAll('.delete-button')
     for (let i = 0; i < deleteButtons.length; i++) {
       deleteButtons[i].addEventListener('click', () => {
-        let id = event.target.id
+        let id = parseInt(event.target.id)
         this.hotel.deleteBooking(id)
         this.searchForBookings()
       })
     }
+  },
+
+  sortBookingsByDate(user) {
+    return user.bookings.sort((a, b) => {
+      a.newDate = new Date(a.date)
+      b.newDate = new Date(b.date)
+      return moment(b.newDate) - moment(a.newDate)
+    })
   },
 
   makeCard(booking) {
@@ -392,10 +451,13 @@ const page = {
     } else {
       finalBlock = `</div></section>`
     }
-
     return mainBlock + finalBlock
-  }
+  },
 
+  setUserMessage(message) {
+    const display = document.getElementById('message-to-user')
+    display.innerText = message
+  }
 }
 
 export default page

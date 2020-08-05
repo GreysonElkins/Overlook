@@ -9,8 +9,6 @@ import './images/single-room.jpg';
 import './images/residential-suite.jpg';
 import './images/junior-suite.jpg';
 import './images/suite.jpg';
-import Manager from './Manager'
-import Customer from './Customer'
 
 import page from './Page'
 
@@ -26,12 +24,13 @@ function buttonHandler(event) {
     const userCredentials = page.getLogInInfoFromForm()
     page.hotel.authenticateUser(userCredentials, page)
       .then(() => {
-        if (page.currentUser !== undefined) {
+        if (page.currentUser === undefined) {
+          page.showElements('#login-message')
+        } else {
           page.goToRoomsPage()  
-          setTimeout(setBookingButtons, 1000)
         }
       })
-  } else if (event.target.id === 'rooms-button') {
+  } else if (event.target.id === 'see-all-rooms') {
     page.goToRoomsPage();
   } else if (event.target.id === 'user-bar-signed-out') {
     page.showElements('.sign-in-pop-up')
@@ -39,33 +38,9 @@ function buttonHandler(event) {
     page.hotel.currentUser = undefined
     location.reload()
   } else if (event.target.id === 'filter-rooms') {
-    console.log(page)
     page.checkTags()
-    setTimeout(setBookingButtons, 1000)
   } else if (event.target.id.includes('submit-user')) {
     page.setUserToBook(event)
   } else if (event.target.id === 'user-search')
     page.searchForBookings()
-}
-
-const pressBookingButton = (event) => {
-  console.log(page)
-  if (page.currentUser instanceof Customer) {
-    page.findCustomerBookingData(event)
-  } else if (page.currentUser instanceof Manager) {
-    page.hotel.getData('users')
-      .then(() => {
-        page.showElements('#booking-pop-up')
-        let roomToBook = event.target.id
-        const button = document.getElementById('submit-user')
-        button.id = `${button.id}${roomToBook}`
-      })
-  }
-}
-
-const setBookingButtons = () => {
-  const bookingButtons = document.querySelectorAll('.booking-button')
-  for (let i = 0; i < bookingButtons.length; i++) {
-    bookingButtons[i].addEventListener('click', pressBookingButton)
-  }
 }

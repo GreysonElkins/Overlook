@@ -120,5 +120,18 @@ describe("Data Handler", () => {
         body: JSON.stringify({ "id": bookings[0].id }),
       })
     })
+
+    it('should alert when the response is ok', () => {
+      dataHandler.deleteBooking(bookings[0].id)
+      expect(alert).to.be.called(1)
+      expect(alert).to.be.called.with(
+        'This reservation has been successfully removed'
+      )
+    })
+
+    it('should throw an error if the response is not ok', () => {
+      mockResponse.ok = undefined;
+      expect(dataHandler.deleteBooking).to.throw('Something went wrong')
+    })
   })
 })
