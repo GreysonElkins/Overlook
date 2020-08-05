@@ -31,8 +31,8 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
+<img src="https://user-images.githubusercontent.com/62047446/89364851-acbe2a80-d690-11ea-9f3b-f5c8a6058bf5.png" alt="THE OVERLOOK but stylized">
 
-[![Product Name Screen Shot][product-screenshot]](https://user-images.githubusercontent.com/62047446/89364851-acbe2a80-d690-11ea-9f3b-f5c8a6058bf5.png)
 
 The Overlook was a solo project done at the end of module 2 at the Turing School of Software Design. Conceptually it's a simple hotel booking website. Under the hood it's a garden of forking paths that'd make Jack Torrence shiver. 
 
@@ -53,8 +53,8 @@ Getting started on the app is simple. Once you've cloned down the repo, run `npm
 <!-- USAGE EXAMPLES -->
 ## Usage
 <img src="./src/images/gif1.gif" alt="A customer running the app">
-[!A gif of the running app]('./src/images/gif1.gif')
-[!A gif of the running app]('./src/images/gif2.gif')
+<img src="./src.images/gif2.gif" alt="A manager running the app">
+
 <!-- ROADMAP -->
 ## Roadmap
 
