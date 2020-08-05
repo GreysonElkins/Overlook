@@ -1,105 +1,108 @@
-# Webpack Starter Kit
+[![Contributors][contributors-shield]](https://github.com/GreysonElkins/Overlook/graphs/contributors)
+[![Forks][forks-shield]](https://github.com/GreysonElkins/Overlook/network/members)
+[![Issues][issues-shield]](https://github.com/GreysonElkins/Overlook/issues)
+[![LinkedIn][linkedin-shield]](lhttps://www.linkedin.com/in/greyson-elkins/)
 
-## Clone This Repo
+<br />
+<p align="center">
+  <a href="https://media3.giphy.com/media/8VJ16DcNZQtkA/giphy-downsized.gif?cid=6104955e6dfacec922d3a5cb16f3691e3f448c1aa835bf5d&rid=giphy-downsized.gif">
+    <img src="https://media3.giphy.com/media/8VJ16DcNZQtkA/giphy-downsized.gif?cid=6104955e6dfacec922d3a5cb16f3691e3f448c1aa835bf5d&rid=giphy-downsized.gif" alt="Logo">
+  </a>
 
-That's right, _clone_ not fork. You will use this repo multiple times, but you can only fork a repository once. So here is what you need to do to clone the repo and still be able to push changes to your repo:
+  <h3 align="center">The Overlook</h3>
 
-1. Clone down this repo. Since you don't want to name your project "webpack-starter-kit", you can use an optional argument when you run `git clone` (you replace the `[...]` with the terminal command arguments): `git clone [remote-address] [what you want to name the repo]`
-1. Remove the default remote: `git remote rm origin` (notice that `git remote -v` not gives you back nothing)
-1. Create a new repo on GitHub with the name of `[what you want to name the repo]` to be consistent with naming
-1. Copy the address that you would use to clone down this repo - something like `git@github.com:...`
-1. Add this remote to your cloned down repo: `git remote add origin [address you copied in the previous step]` - do not include the brackets
 
-Now try to commit something and push it up to your new repo. If everything is setup correctly, you should see the changes on GitHub.
 
-## Setup
+## Table of Contents
 
-After one person has gone through the steps of cloning down this repo and editing the remote, everyone should clone down the repo. 
+* [About the Project](#about-the-project)
+  * [Built With](#built-with)
+* [Getting Started](#getting-started)
+  * [Prerequisites](#prerequisites)
+  * [Installation](#installation)
+* [Usage](#usage)
+* [Roadmap](#roadmap)
+* [Contributing](#contributing)
+* [License](#license)
+* [Contact](#contact)
+* [Acknowledgements](#acknowledgements)
 
-Then install the library dependencies. Run:
 
-```bash
-npm install
-```
 
-To verify that it is setup correctly, run `npm start` in your terminal. Go to `http://localhost:8080/` and you should see a page with some `h1` text, Turing logo image and a beautiful gradient background. If that's the case, you're good to go. Enter `control + c` in your terminal to stop the server at any time.
+<!-- ABOUT THE PROJECT -->
+## About The Project
 
-## Where to Add Your Code
+[![Product Name Screen Shot][product-screenshot]](https://user-images.githubusercontent.com/62047446/89364851-acbe2a80-d690-11ea-9f3b-f5c8a6058bf5.png)
 
-### JavaScript
+The Overlook was a solo project done at the end of module 2 at the Turing School of Software Design. Conceptually it's a simple hotel booking website. Under the hood it's a garden of forking paths that'd make Jack Torrence shiver. 
 
-You have to be very intentional with where you add your feature code. This repo uses a tool called [webpack](https://webpack.js.org/) to combine many JavaScript files into one big file. Webpack enables you to have many, separate JavaScript files to keep your code organized and readable. Webpack expects all of your code files to be in a specific place, or else it doesn't know how to combine them all behind the scenes.
+The project was a culmination of quite a few technologies, but largely focused on interacting with APIs. 
 
-**Create all of your feature code files in the `src` directory.**
+### Built With
+* Javascript and HTML
+* SCSS
+* A Heroku API
+* Webpack
+* Chai and Spies
 
-Since code is separated into multiple files, you need to use the `import` and `export` syntax to share code across file.
+<!-- GETTING STARTED -->
+## Getting Started
 
-Here is a video that walks through some information about [import and export](https://www.youtube.com/watch?v=_3oSWwapPKQ). There are a lot of resources out there about `import` and `export`, and resources will sometimes call them `ES6 modules`. It's something you will see in React and beyond.
+Getting started on the app is simple. Once you've cloned down the repo, run `npm install` and `npm install moment --save`, run `npm start` in your terminal and go to `http://localhost:8080` in your browser. The site should be up and running, and you can log in as the manager with the password overlook2020 or  any user between 1 and 50 (customer3, password overlook2020). Click around! Book a trip! This hotel is to die for.
 
-### HTML
+<!-- USAGE EXAMPLES -->
+## Usage
 
-Add the HTML you need in the `index.html` file in the `./src` directory. There is some boilerplate HTML that exists from the start that you can modify.
+![A gif of the running app]('./src/images/gif1.gif')
+![A gif of the running app]('./src/images/gif2.gif')
+<!-- ROADMAP -->
+## Roadmap
 
-### CSS (SCSS/SASS)
+See the [open issues](https://github.com/GreysonElkins/Overlook/issues) for a list of proposed features (and known issues).
 
-This project is setup to use SCSS/SASS files by default instead of your regular CSS files. Add your SCSS files in the `src/css` directory. There is a `base.scss` file already there, but you can change this file and add multiple SCSS files in this directory.
 
-This might sound weird, but you need to `import` your SCSS files in the JavaScript entry file (`index.js`) for the styles to be applied to your HTML. The example `base.scss` file has already been imported in the JavaScript entry file as an example.
 
-### Images
+<!-- CONTRIBUTING -->
+## Contributing
 
-Add your image files in the `src/images` directory. Similar to CSS files, you need to `import` image files in the JavaScript entry file (`index.js`). Then go into the HTML and add an `img` element with the `src` attribute pointing to the `images` directory. There is an example in the `index.html` file for you to see.
+Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
-## How to View Your Code in Action
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-In the terminal, run:
 
-```bash
-npm start
-```
 
-You will see a bunch of lines output to your terminal. One of those lines will be something like:
 
-```bash
-Project is running at http://localhost:8080/
-```
+<!-- CONTACT -->
+## Contact
 
-Go to `http://localhost:8080/` in your browser to view your code running in the browser.
+Greyson Elkins - [@GreysonElkins](https://twitter.com/GreysonElkins) - greysonelkins@gmail.com
 
----
+Project Link: [The OverLook](https://github.com/GreysonElkins/Overlook)
 
-## Test Files Organization
 
-Similar to feature code, your test code needs to be put in a specific place for it to run successfully.
 
-**Put all of your test files in the `test` directory.** As a convention, all test filenames should end with `-test.js`. For instance: `box-test.js`.
+<!-- ACKNOWLEDGEMENTS -->
 
-## Running Your Tests
 
-Run your test suite using the command:
 
-```bash
-npm test
-```
 
-The test results will output to the terminal.
 
----
-
-## Linting Your Code
-
-Run the command in your terminal `npm run lint` to run the linter on your JavaScript code. There will be errors and warnings right from the start in this starter kit - the linter is still running successfully.
-
-Your linter will look at the JavaScript files you have within the `src` directory and the `test` directory. 
-
-## Webpack?
-
-If you look in the `package.json` file, you'll see one of the library dependencies called `webpack`. If you're interested in learning more about what Webpack is and how it works behind the scenes, take a look through the [Webpack configuration documentation](https://webpack.js.org/concepts/).
-
-## Deploying to GitHub Pages
-
-_If you are finished with the functionality and testing of your project_, then you can consider deploying your project to the web! This way anyone can play it without cloning down your repo.
-
-[GitHub Pages](https://pages.github.com/) is a great way to deploy your project to the web. Don't worry about this until your project is free of bugs and well tested!
-
-If you _are_ done, you can follow [this procedure](./gh-pages-procedure.md) to get your project live on GitHub Pages.
+<!-- MARKDOWN LINKS & IMAGES -->
+<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+[contributors-shield]: https://img.shields.io/github/contributors/jordy1611/whats-cookin-JS-JS-KS.svg?style=flat-square
+[contributors-url]: https://github.com/jordy1611/whats-cookin-JS-JS-KS/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/jordy1611/whats-cookin-JS-JS-KS.svg?style=flat-square
+[forks-url]: https://github.com/jordy1611/whats-cookin-JS-JS-KS/network/members
+[stars-shield]: https://img.shields.io/github/stars/jordy1611/whats-cookin-JS-JS-KS.svg?style=flat-square
+[stars-url]: https://github.com/jordy1611/whats-cookin-JS-JS-KS/stargazers
+[issues-shield]: https://img.shields.io/github/issues/jordy1611/whats-cookin-JS-JS-KS.svg?style=flat-square
+[issues-url]: https://github.com/jordy1611/whats-cookin-JS-JS-KS/issues
+[license-shield]: https://img.shields.io/github/license/jordy1611/whats-cookin-JS-JS-KS.svg?style=flat-square
+[license-url]: https://github.com/jordy1611/whats-cookin-JS-JS-KS/blob/master/LICENSE.txt
+[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
+[linkedin-url]: https://linkedin.com/in/othneildrew
+[product-screenshot]: images/screenshot.png
