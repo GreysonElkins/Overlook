@@ -53,8 +53,8 @@ Getting started on the app is simple. Once you've cloned down the repo, run `npm
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-![A gif of the running app]('./src/images/gif1.gif')
-![A gif of the running app]('./src/images/gif2.gif')
+[!A gif of the running app]('./src/images/gif1.gif')
+[!A gif of the running app]('./src/images/gif2.gif')
 <!-- ROADMAP -->
 ## Roadmap
 
