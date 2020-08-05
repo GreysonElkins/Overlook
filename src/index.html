@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Cormorant+Garamond:wght@600&family=Maven+Pro&display=swap"
+      rel="stylesheet">
     <title>The Overlook Hotel</title>
   </head>
 <body>
@@ -11,7 +14,7 @@
         <img class="icon" src="/images/user-icon.png" alt="user icon" tabindex="0"/>
         <button class="" id="user-bar-signed-out" tabindex="0">sign in</button>
         <span class="hidden" id="user-bar-signed-in">
-          <span class="" id="user-name" tabindex="0" tabindex="0">Jack Torrence</span> |
+          <span class="user-name" id="user-name" tabindex="0" tabindex="0">Jack Torrence</span> |
           <button id="sign-out" tabindex="0"> sign-out</button>
         </span>
       </span>
@@ -56,7 +59,11 @@
       </section>
     </section>
     <section class="rooms-page hidden" id="rooms-page">
-
+        <section class="apology hidden" id="profuse-apology">
+          We're so sorry, but there aren't rooms available on this date<br />
+          please try searching for other options we'd love to have you
+        </section>
+      
       <section class="card-container" id="card-container">
       </section>
     </section>
@@ -66,25 +73,28 @@
       </section>
     </section>
   </section>
-  <section class="sign-in-pop-up hidden" id="sign-in-pop-up"> 
-    <form>
-      <span>
-        <label for="username">username: </label>
-        <input id="username" tabindex="0" />
-      </span>
-      <span>
-        <label for="password">password: </label>
-        <input id="password" type="password" tabindex="0" />
-      </span>
-      <span class="hidden" id="login-message">A user with these credentials was not found, please try again</span>
-      <button tabindex="0" id="log-in">Login</button>
-    </form>
-  </section>
-  <section class="booking-pop-up hidden" id="booking-pop-up">
-    Please select a user:
-    <input id='user-to-book-for'/> 
-    <span id='missing-user'></span>
-    <button id="submit-user">Ok</button>
-  </section>
+  <div class="pop-up-container">
+    <section class="sign-in-pop-up hidden" id="sign-in-pop-up"> 
+      <form>
+        <span>
+          <label for="username">username: </label>
+          <input id="username" tabindex="0" />
+        </span>
+        <span>
+          <label for="password">password: </label>
+          <input id="password" type="password" tabindex="0" />
+        </span>
+        <span class="hidden" id="login-message">A user with these credentials was not found, please try again</span>
+        <button tabindex="0" id="log-in">Login</button>
+      </form>
+    </section>
+    <section class="booking-pop-up hidden" id="booking-pop-up">
+      Please select a user:
+      <input id='user-to-book-for'/> 
+      <span id='missing-user'></span>
+      <button id="submit-user">Ok</button>
+    </section>
+  </div>
+
 </body>
 </html>

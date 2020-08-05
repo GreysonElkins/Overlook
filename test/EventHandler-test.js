@@ -3,7 +3,7 @@ const expect = chai.expect
 const spies = require("chai-spies")
 chai.use(spies)
 
-import EventHandler from "../src/EventHandler"
+// import EventHandler from "../src/EventHandler"
 
 describe("Event Handler", () => {
   
@@ -13,28 +13,28 @@ describe("Event Handler", () => {
   let roomEvent
 
   beforeEach(() => {
-    global.document = { }
-    fauxPage = {hotel: {}}
-    event = {target: {id: 'log-in'}}
-    roomEvent = {target: {id: 'rooms-button'}}
-    Object.prototype.addEventListener = () => {}
-    chai.spy.on(event, 'preventDefault', () => {})
-    chai.spy.on(fauxPage, ["goToRoomsPage", "getLogInInfoFromForm"], () => {
-      return {username: 'yoPapa', password: 'yoMama'}
-    })
-    chai.spy.on(fauxPage.hotel, ['authenticateUser'], () => {
-      fauxPage.hotel.currentUser = "YoPapa"
-      return {then: () => {
-        if (fauxPage.hotel.currentUser !== undefined) {
-          fauxPage.goToRoomsPage();
-        }
-      }}
-    })
-    chai.spy.on(document, ["querySelectorAll"], () => {
-      return ['node', 'node', 'node']
-    })
-    handler = new EventHandler()
-    chai.spy.on(Object.prototype, ["addEventListener"], () => {})
+    // global.document = { }
+    // fauxPage = {hotel: {}}
+    // event = {target: {id: 'log-in'}}
+    // roomEvent = {target: {id: 'rooms-button'}}
+    // Object.prototype.addEventListener = () => {}
+    // chai.spy.on(event, 'preventDefault', () => {})
+    // chai.spy.on(fauxPage, ["goToRoomsPage", "getLogInInfoFromForm"], () => {
+    //   return {username: 'yoPapa', password: 'yoMama'}
+    // })
+    // chai.spy.on(fauxPage.hotel, ['authenticateUser'], () => {
+    //   fauxPage.hotel.currentUser = "YoPapa"
+    //   return {then: () => {
+    //     if (fauxPage.hotel.currentUser !== undefined) {
+    //       fauxPage.goToRoomsPage();
+    //     }
+    //   }}
+    // })
+    // chai.spy.on(document, ["querySelectorAll"], () => {
+    //   return ['node', 'node', 'node']
+    // })
+    // handler = new EventHandler()
+    // chai.spy.on(Object.prototype, ["addEventListener"], () => {})
   })
   
   describe("set-up", () => {

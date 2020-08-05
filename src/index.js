@@ -30,12 +30,12 @@ function buttonHandler(event) {
           page.showElements('#login-message')
         } else {
           page.goToRoomsPage()  
-          setTimeout(setBookingButtons, 1000)
+          // setTimeout(setBookingButtons, 1000)
         }
       })
   } else if (event.target.id === 'see-all-rooms') {
     page.goToRoomsPage();
-    setTimeout(setBookingButtons, 1000)
+    // setTimeout(setBookingButtons, 1000)
   } else if (event.target.id === 'user-bar-signed-out') {
     page.showElements('.sign-in-pop-up')
   } else if (event.target.id === 'sign-out') {
@@ -43,30 +43,10 @@ function buttonHandler(event) {
     location.reload()
   } else if (event.target.id === 'filter-rooms') {
     page.checkTags()
-    setTimeout(setBookingButtons, 1000)
+    // setTimeout(setBookingButtons, 1000)
   } else if (event.target.id.includes('submit-user')) {
     page.setUserToBook(event)
+    // setTimeout(setBookingButtons, 2000);
   } else if (event.target.id === 'user-search')
     page.searchForBookings()
-}
-
-const pressBookingButton = (event) => {
-  if (page.currentUser instanceof Customer) {
-    page.findCustomerBookingData(event)
-  } else if (page.currentUser instanceof Manager) {
-    page.hotel.getData('users')
-      .then(() => {
-        page.showElements('#booking-pop-up')
-        let roomToBook = event.target.id
-        const button = document.getElementById('submit-user')
-        button.id = `${button.id}${roomToBook}`
-      })
-  }
-}
-
-const setBookingButtons = () => {
-  const bookingButtons = document.querySelectorAll('.booking-button')
-  for (let i = 0; i < bookingButtons.length; i++) {
-    bookingButtons[i].addEventListener('click', pressBookingButton)
-  }
 }

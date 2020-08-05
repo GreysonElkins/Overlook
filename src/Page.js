@@ -39,7 +39,9 @@ const page = {
 
   goToRoomsPage(rooms) {
     this.populateRoomCards(rooms) 
-      .then(() => this.findLoggedInElements())
+      .then(() => {
+        this.findLoggedInElements()
+      })
     this.hideElements('.home-page', '.sign-in-pop-up')
     this.showElements('.rooms-page', '.sign-in-or-out')
   },
@@ -55,12 +57,55 @@ const page = {
         }
         const container = document.getElementById('card-container')
         container.innerHTML = ''
-        rooms.forEach(room => {
-          container.insertAdjacentHTML('beforeend', this.roomCardTemplate(room))
-        })
+        if (Array.isArray(rooms)) {
+          rooms.forEach(room => {
+            container.insertAdjacentHTML(
+              'beforeend', this.roomCardTemplate(room)
+            )
+          })
+          this.activateBookingButtons()
+          this.hideElements('.apology')
+        } else {
+          this.showElements('.apology')
+        }
       })
   },
+
+  activateBookingButtons() {
+    const bookingButtons = document.querySelectorAll(".booking-button");
+    console.log(bookingButtons)
+    for (let i = 0; i < bookingButtons.length; i++) {
+      bookingButtons[i].addEventListener("click", (event) => {
+        if (this.currentUser instanceof Customer) {
+          this.findCustomerBookingData(event);
+        } else if (this.currentUser instanceof Manager) {
+          this.hotel.getData("users").then(() => {
+            this.showElements("#booking-pop-up");
+            let roomToBook = event.target.id;
+            const button = document.getElementById("submit-user");
+            button.value = `${roomToBook}`;
+          });
+        }
+      });
+    }
+  },
   
+  pressBookingButton(event) {
+    console.log()
+    if (this.currentUser instanceof Customer) {
+      this.findCustomerBookingData(event)
+    } else if (this.currentUser instanceof Manager) {
+      this.hotel.getData('users')
+        .then(() => {
+          this.showElements('#booking-pop-up')
+          let roomToBook = event.target.id
+          const button = document.getElementById('submit-user')
+          button.value = `${roomToBook}`
+        })
+    }
+  },
+
+
   roomCardTemplate(room) {
     return `
       <section class="card" tabindex="0">
@@ -167,11 +212,11 @@ const page = {
     if (this.currentUser instanceof Manager) {
       return `
       <h3 tabindex="0">The Overlook at a Glance</h3><br />
-      Rooms available for <date>$${printDate}</date>: 
+      Rooms available for <date>${printDate}</date>: 
       <span id="roomsAvailable" tabindex="0">
         ${this.hotel.findAvailableRooms().length}
       </span><br />
-      Revenue on <date>$${printDate}</date>: 
+      Revenue on <date>${printDate}</date>: 
       <span id="revenue" tabindex="0">
         $${this.hotel.calculateDailyRevenue()}
       </span><br />
@@ -326,7 +371,7 @@ const page = {
   },
 
   setUserToBook(event) {
-    let room = parseInt(event.target.id.substring(11))
+    let room = parseInt(event.target.value)
     this.hotel.getData('users')
       .then(() => {
         let inputValue = document.getElementById('user-to-book-for').value
@@ -340,8 +385,6 @@ const page = {
           this.hideElements('#booking-pop-up')
         }
       })
-    const button = document.getElementById(`submit-user${room}`);
-    button.id = `submit-user`;
   },
 
   searchForBookings() {
@@ -363,7 +406,6 @@ const page = {
 
   populateBookingCards(user) {
     user.bookings = this.sortBookingsByDate(user)
-    // user.bookings.sort((a, b) => moment(b.date) - moment(a.date))
     let bookingCards = user.bookings.reduce((htmlBlock, booking) => {
       const newCard = this.makeCard(booking)
       htmlBlock += newCard

@@ -6,31 +6,31 @@
   justify-content: space-around;
   padding: 0em 2em;
   width: 80%;
-  margin: 0 auto;
-  margin-left: 15em;
+  margin: 0 15em;
 }
 
 .card {
   background-color: $linen;
   border-radius: 2%;
-  font-size: .8em;
+  font-size: 1em;
   height: 15em;
   margin: 0em 0em 2em 2em;
   overflow: hidden;
-  width: 30em;
+  width: 29em;
 
   button {
     background-color: $warm-green;
     border-radius: 10%;
     color: $linen;
-    font-size: 1em;
+    font-size: 1.1em;
     padding: .5em;
     position: relative;
-    bottom: -3em;
-    left: 6.5em;
+    bottom: -1.3em;
+    left: 4.5em;
   }
 
   &-title {
+    
     color: $linen;
     font-size: 2em;
     height: 1.3em;
@@ -65,4 +65,22 @@
         height: 100%;
       }
   }
+}
+
+.card-title {
+font-family: 'Cormorant Garamond', serif;
+}
+
+.apology {
+  @extend .card;
+  padding: 2em;
+  position: fixed;
+  top: 45%;
+  left: 45%;
+  margin-top: 45%;
+  margin-left: 45%;
+  font-size: 1em;
+  height: 10em;
+  width: 8em;
+  margin: auto;
 }

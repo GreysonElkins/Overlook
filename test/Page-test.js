@@ -99,7 +99,7 @@ describe("Page", () => {
 
     it('should find the card-container where to put room cards', () => {
       page.populateRoomCards()
-      expect(document.getElementById).to.have.been.called(1)
+      expect(document.getElementById).to.have.been.called(3)
       expect(document.getElementById).to.have.been.called.with('card-container')
     })
 
@@ -154,6 +154,7 @@ describe("Page", () => {
   describe('user dashboards', () => {
     
     beforeEach(() => {
+      Object.prototype.addEventListener = () => {}
       page.currentUser = new Customer(users[0])
       chai.spy.on(page.hotel, [
         'calculateDailyRevenue', 
@@ -223,7 +224,7 @@ describe("Page", () => {
       event = { target: { id: `submit -user1`}}
       chai.spy.on(page, ['getDateInQuestion', 'getSelectedTags'], () => { })
       chai.spy.on(page.currentUser, 'createBooking', () => {})
-      chai.spy.on(page.hotel, 'makeBooking', () => {})
+      chai.spy.on(page.hotel, 'makeBooking', () => mockResponse)
       chai.spy.on(page.hotel, 'findUser', () => users[0])
       chai.spy.on(page, [
         'sortBookingsByDate', 
@@ -234,14 +235,14 @@ describe("Page", () => {
     it('should share/send booking from the user for creation and then the ' +
     'hotel for posting', () => {
       page.findCustomerBookingData(event)  
-      expect(page.getDateInQuestion).to.have.been.called(1)
+      expect(page.getDateInQuestion).to.have.been.called(2)
       expect(page.currentUser.createBooking).to.have.been.called(1)
       expect(page.hotel.makeBooking).to.have.been.called(1)
     })
 
     it('should find booking data for a manager who has provided an id', () =>{
       page.findManagerBookingData()
-      expect(page.getDateInQuestion).to.have.been.called(1)
+      expect(page.getDateInQuestion).to.have.been.called(2)
       expect(page.currentUser.createBooking).to.have.been.called(1)
       expect(page.hotel.makeBooking).to.have.been.called(1)
     })
@@ -249,15 +250,15 @@ describe("Page", () => {
     it('should be able to pull out an id from an event id find a user' + 
     'after fetching users', () => {
       page.setUserToBook(event)
-      expect(page.hotel.getData).to.have.been.called(1)
+      expect(page.hotel.getData).to.have.been.called(5)
       expect(page.hotel.getData).to.have.been.called.with('users')
-      expect(document.getElementById).to.have.been.called(1)
+      expect(document.getElementById).to.have.been.called(6)
       expect(page.hotel.findUser).to.have.been.called(1)
     })
     
     it('should remove the booking pop-up if a user is found', () => {
       page.setUserToBook(event)
-      expect(page.hideElements).to.have.been.called(1)
+      expect(page.hideElements).to.have.been.called(4)
     })
 
     it('should be able to find a user to search for in an input field', () => {
