@@ -53,7 +53,7 @@ Getting started on the app is simple. Once you've cloned down the repo, run `npm
 <!-- USAGE EXAMPLES -->
 ## Usage
 <img src="./src/images/gif1.gif" alt="A customer running the app">
-<img src="./src.images/gif2.gif" alt="A manager running the app">
+<img src="./src/images/gif2.gif" alt="A manager running the app">
 
 <!-- ROADMAP -->
 ## Roadmap
